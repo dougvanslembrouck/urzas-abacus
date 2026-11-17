@@ -1,0 +1,97 @@
+/* =========================================================
+   layout.css: the table grid and where each seat sits
+   Every card is turned to face its player, so everyone
+   reads their own card right side up. Built for a portrait
+   tablet lying flat in the middle of the table.
+
+   Layouts (data-layout on the board):
+     2, 3      players at the two short ends
+     ends      4P, two players at each short end
+     sides     4P, two players along each long side
+     around    4P, one player on each side
+   ========================================================= */
+
+.board {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+}
+
+/* ---- 4 players, "ends": 2 × 2, two players at the top, two at the bottom ---- */
+.board[data-players="4"] { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.board[data-players="4"] [data-seat="1"] { grid-area: 1 / 1 / 2 / 2; transform: rotate(180deg); border-right: 1px solid var(--border-dark); border-bottom: 1px solid var(--border-dark); }
+.board[data-players="4"] [data-seat="2"] { grid-area: 1 / 2 / 2 / 3; transform: rotate(180deg); border-bottom: 1px solid var(--border-dark); }
+.board[data-players="4"] [data-seat="3"] { grid-area: 2 / 1 / 3 / 2; border-right: 1px solid var(--border-dark); }
+.board[data-players="4"] [data-seat="4"] { grid-area: 2 / 2 / 3 / 3; }
+
+/* ---- 3 players: two on top, one full width below ---- */
+.board[data-players="3"] { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.board[data-players="3"] [data-seat="1"] { grid-area: 1 / 1 / 2 / 2; transform: rotate(180deg); border-right: 1px solid var(--border-dark); border-bottom: 1px solid var(--border-dark); }
+.board[data-players="3"] [data-seat="2"] { grid-area: 1 / 2 / 2 / 3; transform: rotate(180deg); border-bottom: 1px solid var(--border-dark); }
+.board[data-players="3"] [data-seat="3"] { grid-area: 2 / 1 / 3 / 3; }
+
+/* ---- 2 players: face to face ---- */
+.board[data-players="2"] { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+.board[data-players="2"] [data-seat="1"] { grid-area: 1 / 1 / 2 / 2; transform: rotate(180deg); border-bottom: 1px solid var(--border-dark); }
+.board[data-players="2"] [data-seat="2"] { grid-area: 2 / 1 / 3 / 2; }
+
+/* ---- Sideways seats (4P "sides" and "around") ----
+   A card turned 90° is laid out at the size it will have once turned
+   (the cell's height becomes its width), then centered in its cell and
+   rotated. Each seat sets the cell center (--cx, --cy), the card's
+   size before turning (--w, --h) and the turn (--rot). */
+.board[data-layout="sides"] .player-card,
+.board[data-layout="around"] .player-card {
+  position: absolute;
+  grid-area: auto;                /* position against the whole board, not a grid cell */
+  left: var(--cx);
+  top: var(--cy);
+  width: var(--w);
+  height: var(--h);
+  transform: translate(-50%, -50%) rotate(var(--rot));
+  border: 0.5px solid var(--border-dark);
+}
+
+/* "sides": seats go clockwise from the top of the left side.
+   Left-side cards turn 90° so their bottom edge faces the left edge; right-side cards turn −90°. */
+.board[data-layout="sides"] .player-card { --w: 50vh; --h: 50vw; }
+.board[data-layout="sides"] [data-seat="1"] { --cx: 25vw; --cy: 25vh; --rot: 90deg; }
+.board[data-layout="sides"] [data-seat="2"] { --cx: 75vw; --cy: 25vh; --rot: -90deg; }
+.board[data-layout="sides"] [data-seat="3"] { --cx: 75vw; --cy: 75vh; --rot: -90deg; }
+.board[data-layout="sides"] [data-seat="4"] { --cx: 25vw; --cy: 75vh; --rot: 90deg; }
+
+/* "around": seats go clockwise from the top. The top and bottom seats are
+   full-width bands a quarter of the height; the side seats share the middle half.
+   All four get the same screen area. */
+.board[data-layout="around"] [data-seat="1"] { --cx: 50vw; --cy: 12.5vh; --w: 100vw; --h: 25vh; --rot: 180deg; }
+.board[data-layout="around"] [data-seat="2"] { --cx: 75vw; --cy: 50vh;   --w: 50vh;  --h: 50vw; --rot: -90deg; }
+.board[data-layout="around"] [data-seat="3"] { --cx: 50vw; --cy: 87.5vh; --w: 100vw; --h: 25vh; --rot: 0deg; }
+.board[data-layout="around"] [data-seat="4"] { --cx: 25vw; --cy: 50vh;   --w: 50vh;  --h: 50vw; --rot: 90deg; }
+
+/* The top and bottom bands are wide and short: life on the left, commander damage
+   on the right. Their top edge doesn't touch the control bar, so no extra padding. */
+.board[data-layout="around"] :is([data-seat="1"], [data-seat="3"]) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-areas: "header header" "line line" "life panel";
+  column-gap: 1rem;
+  padding-top: 0.75rem;
+}
+.board[data-layout="around"] :is([data-seat="1"], [data-seat="3"]) .card-header { grid-area: header; }
+.board[data-layout="around"] :is([data-seat="1"], [data-seat="3"]) .commander-line { grid-area: line; }
+.board[data-layout="around"] :is([data-seat="1"], [data-seat="3"]) .commander-meta { flex-direction: row; align-items: center; gap: 0.5rem; }
+.board[data-layout="around"] :is([data-seat="1"], [data-seat="3"]) .life-engine { grid-area: life; min-height: 0; margin: 0.25rem 0 0 -1rem; }
+.board[data-layout="around"] :is([data-seat="1"], [data-seat="3"]) .commander-panel {
+  grid-area: panel;
+  align-self: center;
+  border-top: none;
+  margin-top: 0.25rem;
+  padding-top: 0;
+}
+.board[data-layout="around"] :is([data-seat="1"], [data-seat="3"]) .commander-picker { padding-top: 0.75rem; }
+
+/* Seats that aren't in play */
+.player-card.is-hidden-seat,
+.cmd-row.is-hidden-seat { display: none !important; }

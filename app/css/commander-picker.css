@@ -1,0 +1,71 @@
+/* =========================================================
+   commander-picker.css: searchable commander list that opens
+   inside a player card (so it faces that player)
+   ========================================================= */
+
+.commander-picker {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: rgba(9, 10, 14, 0.96);
+  display: none;
+  flex-direction: column;
+  padding: 0.85rem;
+  padding-top: calc(var(--hud-height, 46px) / 2 + 0.75rem);   /* clear the centered control bar */
+  gap: 0.6rem;
+}
+.commander-picker.open { display: flex; }
+
+.picker-top { display: flex; gap: 0.5rem; }
+.picker-search {
+  flex: 1;
+  min-width: 0;
+  background: #171a23;
+  border: 1px solid #2a3142;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  outline: none;
+}
+.picker-search:focus { border-color: var(--accent-blue); }
+.picker-close {
+  background: #fff;
+  color: #000;
+  border: none;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 0 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.picker-results {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+.picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-align: left;
+  background: #141822;
+  border: 1px solid transparent;
+  color: #fff;
+  font-size: 0.88rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.picker-item:active, .picker-item.selected { border-color: var(--accent-blue); }
+.picker-item.land-option { color: var(--text-muted); font-style: italic; }
+.picker-hint { color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 0.75rem 0; }
+
+/* Color identity pips: shared .mana-pips styles live in player-card.css */
+.picker-item .mana-pips { --pip-size: 16px; }

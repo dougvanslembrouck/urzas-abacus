@@ -1,0 +1,363 @@
+/* =========================================================
+   player-card.css: one seat at the table
+   (themes, header, life total, commander line, tax,
+    monarch, commander damage, eliminated state)
+   ========================================================= */
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  padding-top: calc(var(--hud-height, 46px) / 2 + 0.75rem);   /* room for the centered control bar */
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease, opacity 0.4s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  container-type: inline-size;
+}
+
+/* ---- Seat themes: land art under a tinted scrim. The color is the fallback. ---- */
+.theme-arcane {  /* Plains */
+  --tint: 23, 18, 40;
+  background-color: #171228;
+  background-image: linear-gradient(rgba(23, 18, 40, 0.55), rgba(10, 8, 20, 0.82)), url("../images/lands/plains.png");
+}
+.theme-inferno { /* Mountain */
+  --tint: 36, 15, 15;
+  background-color: #240f0f;
+  background-image: linear-gradient(rgba(36, 15, 15, 0.45), rgba(15, 6, 6, 0.8)), url("../images/lands/mountain.png");
+}
+.theme-forest {  /* Forest */
+  --tint: 12, 32, 20;
+  background-color: #0c2014;
+  background-image: linear-gradient(rgba(12, 32, 20, 0.45), rgba(5, 14, 8, 0.8)), url("../images/lands/forest.png");
+}
+.theme-shadow {  /* Swamp */
+  --tint: 19, 21, 24;
+  background-color: #131518;
+  background-image: linear-gradient(rgba(19, 21, 24, 0.4), rgba(8, 9, 11, 0.8)), url("../images/lands/swamp.png");
+}
+
+/* Commander art replaces the land, keeping the seat's tint */
+.player-card.has-art {
+  background-image: linear-gradient(rgba(var(--tint), 0.45), rgba(8, 8, 12, 0.82)), var(--art);
+}
+
+/* ---- Header: name, crown, I'm Dead ---- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+}
+
+.player-name-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-right: 0.5rem;
+  text-overflow: ellipsis;        /* long commander names end in … */
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  outline: none;
+  border-bottom: 1px solid transparent;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+.player-name-input:focus {
+  color: #ffffff;
+  border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.header-actions { display: flex; align-items: center; gap: 0.45rem; flex-shrink: 0; }
+
+.dead-btn {
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  color: var(--lethal-red);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* ---- Monarch crown ---- */
+.monarch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  z-index: 10;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.monarch-btn svg { width: 18px; height: 18px; }
+.player-card.is-monarch .monarch-btn {
+  color: #1a1404;
+  background: var(--monarch-gold);
+  border-color: #ffe08a;
+  box-shadow: 0 0 14px rgba(245, 197, 66, 0.7);
+}
+.player-card.is-monarch {
+  box-shadow: inset 0 0 0 3px rgba(245, 197, 66, 0.9), inset 0 0 48px rgba(245, 197, 66, 0.25);
+}
+
+/* ---- Commander line: picker button, art credit, tax ---- */
+.commander-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  z-index: 5;
+  min-width: 0;
+}
+.commander-pick-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-tap-highlight-color: transparent;
+}
+.commander-pick-btn .cp-label { overflow: hidden; text-overflow: ellipsis; }
+.commander-pick-btn .cp-caret { opacity: 0.6; flex-shrink: 0; }
+.art-credit {
+  flex: 1 1 0;        /* only takes space the commander name leaves free */
+  min-width: 0;
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Tax counter with the commander's colors underneath ---- */
+.commander-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* ---- Commander tax ---- */
+.tax-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 0.15rem 0.2rem;
+}
+.tax-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-left: 0.2rem;
+}
+.tax-val {
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  min-width: 1.1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+}
+.tax-control.has-tax { border-color: rgba(245, 158, 11, 0.55); }
+.tax-control.has-tax .tax-val { color: var(--accent-amber); }
+.tax-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.tax-btn:active { background: rgba(255, 255, 255, 0.25); }
+
+/* ---- Color identity pips (also used in the commander search) ----
+   A colored circle with Scryfall's mana symbol on top. If the symbol
+   can't load, the circle shows the color's letter instead. */
+.commander-colors { display: flex; justify-content: flex-end; min-height: 0; }
+.commander-colors:not(.has-colors) { display: none; }
+.mana-pips { --pip-size: 20px; display: inline-flex; gap: 3px; flex-shrink: 0; }
+.mana-pip {
+  position: relative;
+  width: var(--pip-size);
+  height: var(--pip-size);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  color: #141414;
+  font-size: calc(var(--pip-size) * 0.55);
+  font-weight: 800;
+  line-height: 1;
+}
+.mana-pip::before { content: attr(data-letter); }               /* offline fallback */
+.mana-pip img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mana-W { background: #f8f6d8; }
+.mana-U { background: #c1d7e9; }
+.mana-B { background: #bab1ab; }
+.mana-R { background: #e49977; }
+.mana-G { background: #a3c095; }
+.mana-C { background: #ccc2c0; }
+
+/* ---- Life total ----
+   The whole row is a tap target: left half loses life, right half gains it.
+   The row grows to fill the space between the commander line and the
+   commander damage panel, so the targets are as big as the card allows. */
+.life-engine {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 5rem;
+  display: flex;
+  align-items: stretch;
+  margin: 0.25rem -1rem;          /* reach the card's edges */
+}
+.life-zone {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  touch-action: manipulation;     /* no double-tap zoom delay on fast taps */
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s;
+}
+.life-zone-minus { justify-content: flex-start; padding-left: 1.25rem; }
+.life-zone-plus  { justify-content: flex-end;   padding-right: 1.25rem; }
+.life-zone:active { background-color: rgba(255, 255, 255, 0.08); }
+.life-zone:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.5); outline-offset: -4px; }
+.life-zone-hint {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  opacity: 0.3;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* The number sits on top of both zones and lets taps pass through to them */
+.life-val {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: min(6rem, 45cqw);    /* 20% larger than before, but never crowds a narrow card */
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* ---- Commander damage received ---- */
+.commander-panel {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+}
+.panel-title {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+.cmd-rows { display: flex; flex-direction: column; gap: 0.35rem; }
+.cmd-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--seat-accent, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.cmd-label {
+  min-width: 0;
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;        /* long commander names end in … */
+}
+.cmd-controls { display: flex; align-items: center; gap: 0.65rem; flex-shrink: 0; }
+.cmd-sub-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cmd-damage-val { font-family: monospace; font-size: 1rem; font-weight: 700; min-width: 1.25rem; text-align: center; }
+.cmd-row.lethal-warning { background-color: rgba(244, 63, 94, 0.25); border-color: var(--lethal-red); }
+.cmd-row.lethal-warning .cmd-damage-val { color: var(--lethal-red); animation: heartBeat 1.5s infinite; }
+
+/* ---- Eliminated ---- */
+.player-card.is-eliminated { background-color: var(--dead-grey) !important; opacity: 0.35; filter: grayscale(1); }
+.player-card.is-eliminated .life-zone,
+.player-card.is-eliminated .cmd-sub-btn,
+.player-card.is-eliminated .tax-btn,
+.player-card.is-eliminated .commander-colors,
+.player-card.is-eliminated .monarch-btn,
+.player-card.is-eliminated .commander-pick-btn,
+.player-card.is-eliminated .player-name-input { pointer-events: none; opacity: 0.2; }
+.player-card.is-eliminated .dead-btn { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); color: #ffffff; }

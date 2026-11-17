@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NJA Life Tracker v2.0.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: one reading column; each feature card shows the control it changes on the right. */
+  :root {
+    --bg: #0d0f14; --surface: #151922; --surface-2: #1c2130; --line: #262c3b;
+    --fg: #eef0f4; --muted: #8f9aab; --gold: #f5c542; --gold-ink: #1a1404;
+    --amber: #f59e0b; --blue: #7fb0f5; --green: #34d399; --code-bg: #0a0c10;
+    --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
+    --font-body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f2ee; --surface: #ffffff; --surface-2: #eeebe4; --line: #ddd8cd;
+      --fg: #1b1d22; --muted: #5d6573; --gold: #c99a14; --gold-ink: #1a1404;
+      --amber: #b86e00; --blue: #2d64b8; --green: #0f8a5f; --code-bg: #f7f5f0; color-scheme: light;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 1.08rem; line-height: 1.6; }
+  .page {
+    max-width: 760px; margin: 0 auto; padding-block: 3rem 4rem;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex; flex-direction: column; gap: 2.5rem;
+  }
+  .release-head { display: flex; flex-direction: column; gap: 0.75rem; }
+  .release-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+  .tag { font-family: var(--font-mono); font-weight: 600; font-size: 0.78rem; color: var(--gold-ink); background: var(--gold); padding: 0.15rem 0.55rem; border-radius: 4px; }
+  h1 { font-family: var(--font-display); font-size: clamp(2rem, 6vw, 3rem); line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: 0.01em; }
+  .lede { color: var(--muted); margin: 0; max-width: 60ch; font-size: 1.15rem; }
+  .play { align-self: flex-start; font-weight: 700; color: var(--gold-ink); background: var(--gold); text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 999px; }
+  .play:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+  .features { display: flex; flex-direction: column; gap: 1rem; }
+  .feature { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem; display: grid; grid-template-columns: minmax(0, 1fr) 13rem; gap: 1.5rem; align-items: start; }
+  .feature h2 { font-family: var(--font-display); font-size: 1.35rem; margin: 0 0 0.4rem; letter-spacing: 0.02em; }
+  .feature p { margin: 0 0 0.75rem; }
+  .feature ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.3rem; }
+  .feature li::marker { color: var(--muted); }
+  .feature-body { min-width: 0; }
+
+  .demo { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; align-items: stretch; }
+  .demo-label { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+
+  /* tap-zone demo */
+  .zones { position: relative; display: grid; grid-template-columns: 1fr 1fr; height: 92px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+  .zone { display: flex; align-items: center; font-size: 1.4rem; color: var(--muted); }
+  .zone.minus { justify-content: flex-start; padding-left: 0.6rem; background: color-mix(in srgb, #e0533d 14%, transparent); }
+  .zone.plus { justify-content: flex-end; padding-right: 0.6rem; background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .zones .num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 2.6rem; font-variant-numeric: tabular-nums; }
+  .zone-caption { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); }
+
+  /* name demo */
+  .seat-name { font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.85rem; }
+  .seat-name.old { color: var(--muted); text-decoration: line-through; }
+  .arrow { color: var(--muted); font-size: 0.8rem; }
+  .dmg-row { display: flex; justify-content: space-between; font-size: 0.8rem; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid #a78bfa; border-radius: 6px; padding: 0.3rem 0.5rem; }
+
+  /* center bar demo */
+  .mini-table { position: relative; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; height: 120px; background: var(--line); border-radius: 8px; overflow: hidden; }
+  .mini-table span { background: var(--surface); }
+  .mini-bar { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 3px; padding: 4px 6px; border-radius: 999px; background: var(--code-bg); border: 1px solid var(--line); font-family: var(--font-mono); font-size: 0.55rem; white-space: nowrap; }
+  .mini-bar b { font-weight: 600; color: var(--muted); }
+  .mini-bar b.r { color: var(--amber); } .mini-bar b.g { color: var(--green); } .mini-bar b.bl { color: var(--blue); }
+
+  section > h2 { font-family: var(--font-display); font-size: 1.15rem; letter-spacing: 0.04em; margin: 0 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); }
+  section ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.35rem; }
+  section p { margin: 0 0 0.75rem; max-width: 65ch; }
+  code { font-family: var(--font-mono); font-size: 0.85em; }
+  .tree-wrap { overflow-x: auto; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; }
+  pre { margin: 0; padding: 1rem; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.55; }
+  .m { color: var(--green); } .v { color: var(--blue); } .c { color: var(--amber); } .dim { color: var(--muted); }
+  .fix { display: grid; gap: 0.5rem; }
+  .fix div { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 0.6rem 0.8rem; }
+  .fix strong { display: block; }
+  footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
+  footer a { color: var(--blue); }
+  @media (max-width: 640px) { .feature { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="release-head">
+    <div class="release-meta">
+      <span class="tag">v2.0.0</span>
+      <span>NJA EDH Pod Life Tracker</span>
+      <span>·</span>
+      <time datetime="2026-11-03">November 3, 2026</time>
+    </div>
+    <h1>Not Just Another Life Tracker</h1>
+    <p class="lede">A rebuild from the ground up, with a table layout that's faster to use mid-game. Your match history and commander picks carry over.</p>
+    <a class="play" href="https://dougvanslembrouck.github.io/nja-edh-pod-life-tracker/" target="_blank" rel="noopener">Play v2.0</a>
+  </header>
+
+  <div class="features">
+    <article class="feature">
+      <div class="feature-body">
+        <h2>Tap to change life</h2>
+        <p>The round buttons are gone. The whole life area is now the button.</p>
+        <ul>
+          <li>Tap anywhere on the right half to gain 1, the left half to lose 1, including right on the number</li>
+          <li>Faint − and + marks show which side is which</li>
+          <li>Rotated seats use the player's own left and right</li>
+          <li>The life total is 20% bigger and scales to fit narrow cards</li>
+        </ul>
+      </div>
+      <div class="demo" aria-hidden="true">
+        <span class="demo-label">Tap areas</span>
+        <div class="zones"><span class="zone minus">−</span><span class="zone plus">+</span><span class="num">37</span></div>
+        <div class="zone-caption"><span>lose 1</span><span>gain 1</span></div>
+      </div>
+    </article>
+
+    <article class="feature">
+      <div class="feature-body">
+        <h2>Your commander's name on your seat</h2>
+        <p>Pick a commander and your seat takes its name everywhere it appears.</p>
+        <ul>
+          <li>On your own card, and in every opponent's commander damage rows</li>
+          <li>Back to the land background? Your old name returns</li>
+          <li>A name you typed yourself is kept</li>
+          <li>Long names end in "…" when space is tight</li>
+        </ul>
+      </div>
+      <div class="demo" aria-hidden="true">
+        <span class="demo-label">Seat 1</span>
+        <span class="seat-name old">Arcane</span>
+        <span class="arrow">↓ picks a commander</span>
+        <span class="seat-name">T'Challa, the Black Panther</span>
+        <span class="demo-label">Opponent's damage row</span>
+        <span class="dmg-row"><span>T'Challa, the Black…</span><span>0</span></span>
+      </div>
+    </article>
+
+    <article class="feature">
+      <div class="feature-body">
+        <h2>Controls in the center</h2>
+        <p>2P / 3P / 4P, Reset, Log Game and History now sit in the exact center of the table, where every player can reach them.</p>
+        <ul>
+          <li>Cards and the commander search leave room, so nothing gets covered</li>
+          <li>More compact on phones, so all six buttons fit</li>
+          <li>Works in 2, 3 and 4 player layouts</li>
+        </ul>
+      </div>
+      <div class="demo" aria-hidden="true">
+        <span class="demo-label">4-player table</span>
+        <div class="mini-table"><span></span><span></span><span></span><span></span>
+          <div class="mini-bar"><b>2P</b><b>3P</b><b>4P</b><b class="r">RESET</b><b class="g">LOG</b><b class="bl">HISTORY</b></div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <section>
+    <h2>Rebuilt as Model–View–Controller</h2>
+    <p>The single 1,250-line file is now an organized project. It still needs no install or build step: double-click <code>index.html</code> and play.</p>
+    <div class="tree-wrap">
+<pre>css/            <span class="dim">one stylesheet per part of the screen</span>
+js/
+  config.js     <span class="dim">starting life, lethal damage, tax step, seats</span>
+  <span class="m">models/</span>       <span class="dim">GameModel · HistoryModel · CommanderCatalog</span>
+  <span class="v">views/</span>        <span class="dim">BoardView · PlayerCardView · CommanderPickerView · HudView · HistoryView</span>
+  <span class="c">controllers/</span>  <span class="dim">GameController · CommanderController · HistoryController</span>
+  app.js
+data/           <span class="dim">commanders.js</span>
+images/         <span class="dim">lands/ · screenshots/</span>
+docs/           <span class="dim">ARCHITECTURE.md</span></pre>
+    </div>
+  </section>
+
+  <section>
+    <h2>Fixes</h2>
+    <div class="fix">
+      <div><strong>Winner detection</strong>An eliminated player with a high life total no longer blocks the win.</div>
+      <div><strong>Phone 4-player layout</strong>The life total no longer spills off the card, and the control bar no longer runs off the screen.</div>
+      <div><strong>Long names</strong>Commander names end in "…" instead of being cut off mid-letter.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Upgrading from v1.x</h2>
+    <p>Replace the whole folder with this release. The old root-level <code>commanders.js</code> and land images are no longer used. Match history and commander picks are kept automatically on the same device and browser.</p>
+  </section>
+
+  <footer>
+    Card data and art via <a href="https://scryfall.com" target="_blank" rel="noopener">Scryfall</a>. Card art © Wizards of the Coast, credited to each artist. Unofficial Fan Content permitted under the <a href="https://company.wizards.com/en/legal/fancontentpolicy" target="_blank" rel="noopener">Wizards of the Coast Fan Content Policy</a>.
+  </footer>
+</main>
+</body>
+</html>

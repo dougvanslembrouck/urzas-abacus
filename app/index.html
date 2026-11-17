@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Urza's Abacus: Commander Life Tracker</title>
+  <meta name="description" content="Urza's Abacus: a free life tracker for Magic: The Gathering Commander (EDH). Life, commander damage, commander tax, the monarch and match history for 2–4 players on one shared device.">
+  <meta name="application-name" content="Urza's Abacus">
+  <meta name="apple-mobile-web-app-title" content="Urza's Abacus">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0b0d11">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/player-card.css">
+  <link rel="stylesheet" href="css/commander-picker.css">
+  <link rel="stylesheet" href="css/hud.css">
+  <link rel="stylesheet" href="css/history.css">
+</head>
+<body>
+
+  <!-- The table. BoardView fills it with one player card per seat. -->
+  <main class="board" id="board" data-players="4"></main>
+
+  <!-- Control bar -->
+  <nav class="hud-controller-bar" id="hud" aria-label="Game controls">
+    <button class="hud-btn" type="button" data-players="2">2P</button>
+    <button class="hud-btn" type="button" data-players="3">3P</button>
+    <button class="hud-btn active hud-btn-4p" type="button" data-players="4" aria-haspopup="true" aria-expanded="false">4P<span class="hud-caret" aria-hidden="true">▾</span></button>
+    <div class="hud-divider"></div>
+    <button class="hud-btn btn-reset" type="button" data-action="reset">Reset</button>
+    <button class="hud-btn btn-action" type="button" data-action="log-game">Log Game</button>
+    <button class="hud-btn btn-log" type="button" data-action="open-history">History</button>
+  </nav>
+
+  <!-- 4P layout chooser: opens from the 4P button. It sits outside the control bar so it
+       never turns with it, and its diagrams always match how the tablet lies. HudView fills it. -->
+  <div class="layout-chooser" id="layout-chooser" role="menu" aria-label="Four-player layout"></div>
+
+  <!-- Match history panel -->
+  <section class="history-panel" id="history-panel" aria-label="Match history">
+    <div class="panel-header">
+      <h2>Match History Logs</h2>
+      <div class="panel-actions">
+        <button class="action-btn" type="button" data-action="export">Export JSON</button>
+        <button class="action-btn" type="button" data-action="import">Import JSON</button>
+        <button class="action-btn danger" type="button" data-action="clear">Clear All</button>
+        <button class="action-btn close-btn" type="button" data-action="close-history">Close</button>
+      </div>
+    </div>
+    <div class="history-stream" data-role="history-stream"></div>
+    <input class="visually-hidden-input" type="file" accept=".json,application/json" data-role="import-file">
+  </section>
+
+  <!-- ===== View templates ===== -->
+
+  <template id="player-card-template">
+    <section class="player-card">
+      <div class="card-header">
+        <input class="player-name-input" type="text" data-role="name" aria-label="Player name" autocomplete="off">
+        <div class="header-actions">
+          <button class="monarch-btn" type="button" data-action="monarch" aria-label="Monarch" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 11H5L3 7zm2 13h14v2H5v-2z"/></svg>
+          </button>
+          <button class="dead-btn" type="button" data-action="dead">I'm Dead</button>
+        </div>
+      </div>
+
+      <div class="commander-line">
+        <button class="commander-pick-btn" type="button" data-action="open-picker">
+          <span class="cp-label" data-role="commander-label">Choose commander</span><span class="cp-caret">▾</span>
+        </button>
+        <span class="art-credit" data-role="art-credit"></span>
+        <div class="commander-meta">
+          <div class="tax-control" data-role="tax" aria-label="Commander tax">
+            <span class="tax-label">Tax</span>
+            <button class="tax-btn" type="button" data-action="tax" data-step="-1" aria-label="Remove commander tax">−</button>
+            <span class="tax-val" data-role="tax-value">0</span>
+            <button class="tax-btn" type="button" data-action="tax" data-step="1" aria-label="Add commander tax">+</button>
+          </div>
+          <!-- Commander's color identity as mana pips, filled in by PlayerCardView -->
+          <div class="commander-colors" data-role="commander-colors"></div>
+        </div>
+      </div>
+
+      <!-- Tap the left half to lose life, the right half to gain life -->
+      <div class="life-engine">
+        <button class="life-zone life-zone-minus" type="button" data-action="life" data-step="-1" aria-label="Lose 1 life"><span class="life-zone-hint" aria-hidden="true">−</span></button>
+        <span class="life-val" data-role="life">40</span>
+        <button class="life-zone life-zone-plus" type="button" data-action="life" data-step="1" aria-label="Gain 1 life"><span class="life-zone-hint" aria-hidden="true">+</span></button>
+      </div>
+
+      <div class="commander-panel">
+        <div class="panel-title">Commander Damage Received</div>
+        <div class="cmd-rows" data-role="cmd-rows"></div>
+      </div>
+
+      <div class="commander-picker" data-role="picker">
+        <div class="picker-top">
+          <input class="picker-search" type="search" placeholder="Search commanders…" autocomplete="off" autocorrect="off" spellcheck="false" data-role="picker-search" aria-label="Search commanders">
+          <button class="picker-close" type="button" data-action="close-picker">Close</button>
+        </div>
+        <div class="picker-results" data-role="picker-results"></div>
+      </div>
+    </section>
+  </template>
+
+  <template id="cmd-row-template">
+    <div class="cmd-row">
+      <span class="cmd-label" data-role="cmd-label"></span>
+      <div class="cmd-controls">
+        <button class="cmd-sub-btn" type="button" data-action="cmd" data-step="-1" aria-label="Remove commander damage">-</button>
+        <span class="cmd-damage-val" data-role="cmd-value">0</span>
+        <button class="cmd-sub-btn" type="button" data-action="cmd" data-step="1" aria-label="Add commander damage">+</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- ===== Scripts (order matters: config, utils, models, views, controllers, app) =====
+       Plain scripts sharing one EDH namespace, so the app still works
+       when index.html is opened straight from a folder. -->
+  <script src="js/config.js"></script>
+  <script src="js/utils/emitter.js"></script>
+  <script src="js/utils/storage.js"></script>
+  <script src="js/utils/dom.js"></script>
+  <script src="js/utils/mana.js"></script>
+  <script src="js/models/CommanderCatalog.js"></script>
+  <script src="js/models/GameModel.js"></script>
+  <script src="js/models/HistoryModel.js"></script>
+  <script src="js/views/CommanderPickerView.js"></script>
+  <script src="js/views/PlayerCardView.js"></script>
+  <script src="js/views/BoardView.js"></script>
+  <script src="js/views/HudView.js"></script>
+  <script src="js/views/HistoryView.js"></script>
+  <script src="js/controllers/GameController.js"></script>
+  <script src="js/controllers/CommanderController.js"></script>
+  <script src="js/controllers/HistoryController.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

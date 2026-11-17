@@ -1,0 +1,115 @@
+/* =========================================================
+   hud.css: floating control bar (layout, reset, log, history)
+   Sits in the exact center of the table, on the line where the
+   seats meet, so every player can reach it.
+   ========================================================= */
+
+:root { --hud-height: 46px; }
+
+.hud-controller-bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: var(--hud-height);
+  background: rgba(15, 18, 25, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-dark);
+  padding: 0.4rem 0.8rem;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  max-width: calc(100vw - 16px);
+}
+
+.hud-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 0.5rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.hud-btn.active { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
+.hud-btn.btn-action { color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+.hud-btn.btn-reset { color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+.hud-btn.btn-log { color: var(--accent-blue); border: 1px solid rgba(59, 130, 246, 0.3); }
+
+.hud-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-dark);
+  margin: 0 0.15rem;
+}
+
+/* Sideways 4P layouts: every card's top edge faces the vertical center line,
+   so the bar turns to lie along it. Players on the left read it upright. */
+.hud-controller-bar[data-layout="sides"],
+.hud-controller-bar[data-layout="around"] { transform: translate(-50%, -50%) rotate(90deg); }
+
+.hud-caret { margin-left: 0.25rem; font-size: 0.6rem; opacity: 0.7; }
+
+/* ---- 4P layout chooser ----
+   Never turned, so its diagrams match the tablet. Opens just above the bar,
+   or beside it when the bar is turned (sideways layouts). */
+.layout-chooser {
+  position: fixed;
+  z-index: 110;
+  left: 50%;
+  top: calc(50% - var(--hud-height) / 2 - 10px);
+  transform: translate(-50%, -100%);
+  display: none;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  background: rgba(15, 18, 25, 0.97);
+  border: 1px solid #2a3142;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+}
+.layout-chooser.open { display: flex; }
+.layout-chooser:is([data-layout="sides"], [data-layout="around"]) {
+  top: 50%;
+  left: calc(50% + var(--hud-height) / 2 + 10px);
+  transform: translate(0, -50%);
+  flex-direction: column;
+}
+.hud-controller-bar.chooser-open .hud-btn-4p { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+.layout-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  width: 112px;
+  padding: 0.7rem 0.5rem 0.6rem;
+  background: #141822;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.layout-option:active { background: #1b2130; }
+.layout-option.selected { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.12); }
+.layout-option-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.layout-option-desc { font-size: 0.66rem; color: var(--text-muted); }
+
+.layout-diagram { width: 54px; height: 76px; }
+.layout-diagram .ld-tablet { fill: none; stroke: #6fa07f; stroke-width: 2; }
+.layout-diagram .ld-parts line { stroke: #6fa07f; stroke-width: 0.8; }
+.layout-diagram .ld-parts path,
+.layout-diagram .ld-parts circle { fill: #6fa07f; }
+.layout-option.selected .ld-tablet,
+.layout-option.selected .ld-parts line { stroke: #93c5fd; }
+.layout-option.selected .ld-parts path,
+.layout-option.selected .ld-parts circle { fill: #93c5fd; }

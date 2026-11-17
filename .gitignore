@@ -1,0 +1,21 @@
+# OS files
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Release zips and local backups (attach zips to GitHub Releases instead)
+*.zip
+_archive/
+
+# Exported match history
+urzas-abacus-history_*.json
+edh_match_history_*.json
+
+# Files Claude saved for you (PDFs and other exports)
+Claude outputs/
