@@ -2,6 +2,11 @@
 
 All notable changes to Urza's Abacus (called the NJA EDH Pod Life Tracker up to v2.1.0). Versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- **AlphaCryptids AI art disclosure.** The AlphaCryptids V1 art was made with Midjourney. A new website page (`disclosure.html`), `AI_DISCLOSURE.md` and `alphacryptids-v1-sources.csv` list the prompt, seed, job and original image for all 26 cards. The giveaway section, the site footer and the README link to it.
+
 ## [2.1.1] – 2026-11-13
 
 ### Added
