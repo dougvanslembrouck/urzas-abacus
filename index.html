@@ -327,6 +327,90 @@
     }
     pre.json .k { color: #a5b4fc; } pre.json .s { color: #fcd9a5; } pre.json .n { color: #8be0b0; }
 
+
+    /* ---------- AlphaCryptids giveaway ---------- */
+    .cryptids-intro { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(36px, 5vw, 72px); align-items: start; }
+    .cryptids-intro .section-head h2 { max-width: 13ch; }
+    .cryptid-facts { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 0.7rem; }
+    .cryptid-facts li { position: relative; padding-left: 1.75rem; color: var(--ink-soft); }
+    .cryptid-facts li::before { content: ""; position: absolute; left: 0; top: 0.45em; width: 12px; height: 9px; border-radius: 50%; background: var(--brass); box-shadow: inset 0 -2px 3px rgba(0,0,0,.2); }
+    .cryptid-facts b { color: var(--ink); font-weight: 600; }
+    .fine { margin-top: 18px; font-size: 0.86rem; color: var(--ink-faint); max-width: 56ch; }
+    .fan { display: flex; gap: 12px; margin-top: 30px; }
+    .fan img { width: 30%; max-width: 150px; filter: drop-shadow(0 14px 16px rgba(18,20,42,.4)); }
+    .fan img:nth-child(1) { transform: rotate(-6deg) translateY(10px); }
+    .fan img:nth-child(3) { transform: rotate(6deg) translateY(10px); }
+
+    .signup { background: var(--white); border-radius: 22px; padding: clamp(24px, 3vw, 34px); box-shadow: 0 30px 60px -24px rgba(27,31,59,.28), 0 0 0 1px var(--line); position: relative; }
+    .signup h3 { font-size: 1.45rem; margin-bottom: 0.35rem; }
+    .signup > p { color: var(--ink-soft); font-size: 0.97rem; }
+    .field { margin-top: 18px; display: grid; gap: 6px; }
+    .field label, .field legend { font-weight: 600; font-size: 0.94rem; padding: 0; }
+    .field input[type=text], .field input[type=email], .field textarea {
+      font: inherit; font-size: 1rem; color: var(--ink); background: var(--paper);
+      border: 1px solid var(--line-strong); border-radius: 12px; padding: 0.7rem 0.85rem; width: 100%;
+    }
+    .field textarea { min-height: 96px; resize: vertical; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 3px rgba(90,79,207,.18); background: #fff; }
+    fieldset.field { border: 0; margin: 18px 0 0; padding: 0; }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+    .choice { position: relative; display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong); cursor: pointer; font-size: 0.93rem; line-height: 1.35; background: var(--paper); }
+    .choice input { margin-top: 3px; accent-color: var(--violet); }
+    .choice:has(input:checked) { border-color: var(--violet); background: rgba(90,79,207,.07); }
+    .choice b { display: block; font-weight: 600; }
+    .address[hidden] { display: none; }
+    .consent { display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; font-size: 0.92rem; color: var(--ink-soft); cursor: pointer; }
+    .consent input { margin-top: 4px; accent-color: var(--violet); width: 16px; height: 16px; flex: none; }
+    .err { color: #b4233c; font-size: 0.85rem; min-height: 0; }
+    .err:empty { display: none; }
+    .signup .btn-primary { margin-top: 22px; width: 100%; justify-content: center; border: 0; cursor: pointer; font-size: 1rem; padding: 0.85rem 1.25rem; }
+    .signup .btn-primary[disabled] { opacity: .6; cursor: progress; }
+    .privacy-note { margin-top: 14px; font-size: 0.8rem; color: var(--ink-faint); }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .signup-done { text-align: left; }
+    .signup-done .ok { width: 52px; height: 40px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 16px;
+      background: radial-gradient(ellipse at 35% 30%, rgba(255,255,255,.8), rgba(255,255,255,0) 45%), var(--g); box-shadow: inset 0 -4px 6px rgba(0,0,0,.2); color: #1f5a31; font-weight: 800; }
+    .signup-done p { color: var(--ink-soft); margin-top: 10px; }
+
+    .crypt-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin: 64px 0 22px; }
+    .crypt-toolbar h3 { font-size: 1.4rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; font: 600 0.88rem/1 var(--font); color: var(--ink-soft); background: var(--white); border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px 12px 6px 7px; cursor: pointer; }
+    .chip[data-filter=all] { padding-left: 12px; }
+    .chip[aria-pressed=true] { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .chip .pip { width: 20px; height: 20px; font-size: 11px; }
+    .crypt-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; }
+    .crypt[hidden] { display: none; }
+    .crypt-btn { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; text-align: left; font: inherit; color: inherit; }
+    .crypt-btn img { width: 100%; height: auto; filter: drop-shadow(0 12px 14px rgba(18,20,42,.35)); transition: transform .18s; }
+    .crypt-btn:hover img { transform: translateY(-4px); }
+    .crypt-cap { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.9rem; font-weight: 600; }
+    .crypt-cap b { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; background: var(--ink); color: #fff; font-size: 0.75rem; flex: none; }
+    .crypt-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .crypt-cap .pip { width: 18px; height: 18px; font-size: 10px; }
+
+    .viewer { border: 0; padding: 0; background: transparent; max-width: none; max-height: none; width: 100%; height: 100%; }
+    .viewer::backdrop { background: rgba(12, 13, 26, 0.86); backdrop-filter: blur(6px); }
+    .viewer-inner { position: fixed; inset: 0; display: grid; place-items: center; padding: 24px; }
+    .viewer figure { margin: 0; display: grid; gap: 14px; justify-items: center; }
+    .viewer img { max-height: calc(100vh - 140px); max-width: min(92vw, 520px); width: auto; height: auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,.6)); }
+    .viewer figcaption { color: #fff; font-weight: 700; font-size: 1.1rem; display: flex; gap: 10px; align-items: center; }
+    .viewer button { position: fixed; border: 0; cursor: pointer; background: rgba(255,255,255,.12); color: #fff; border-radius: 999px; width: 48px; height: 48px; font: 600 1.4rem/1 var(--font); }
+    .viewer button:hover { background: rgba(255,255,255,.24); }
+    .viewer .v-close { top: 18px; right: 18px; }
+    .viewer .v-prev { left: 18px; top: 50%; }
+    .viewer .v-next { right: 18px; top: 50%; }
+
+    @media (max-width: 960px) {
+      .cryptids-intro { grid-template-columns: 1fr; }
+      .crypt-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .crypt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .choices { grid-template-columns: 1fr; }
+      .viewer .v-prev, .viewer .v-next { top: auto; bottom: 18px; }
+    }
+
     /* ---------- Steps ---------- */
     .steps { list-style: none; padding: 0; margin: 56px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; counter-reset: step; }
     .steps li { counter-increment: step; position: relative; padding-top: 64px; }
@@ -403,6 +487,7 @@
       <a class="brand" href="#top"><img src="favicon.svg" alt="">Urza's Abacus</a>
       <nav aria-label="Main">
         <a href="#layouts">Features</a>
+        <a href="#alphacryptids">Free lands</a>
         <a href="#start">Get started</a>
         <a href="#questions">Questions</a>
         <a href="https://github.com/dougvanslembrouck/urzas-abacus">GitHub</a>
@@ -484,6 +569,7 @@
         <a class="link" href="#commanders">Commanders</a>
         <a class="link" href="#table">Tax and monarch</a>
         <a class="link" href="#history">History</a>
+        <a class="link" href="#alphacryptids">Free lands</a>
         <a class="link" href="#start">Get started</a>
         <a class="link" href="#questions">Questions</a>
         <a class="btn btn-primary" href="app/index.html">Open the app</a>
@@ -661,6 +747,168 @@
       </div>
     </section>
 
+
+    <!-- ===== AlphaCryptids giveaway ===== -->
+    <section class="block" id="alphacryptids" aria-labelledby="crypt-title">
+      <div class="wrap">
+        <div class="cryptids-intro">
+          <div>
+            <div class="section-head">
+              <h2 id="crypt-title">Free lands, from A to Z</h2>
+              <p>AlphaCryptids is a set of 26 full-art basic lands, one cryptid for every letter, from the Altamaha-ha to the Zamzummin. We're giving away complete packs at MagicCon Detroit 2027.</p>
+            </div>
+            <ul class="cryptid-facts">
+              <li><b>All 26 cards in every pack:</b> Plains, Islands, Swamps, Mountains and Forests, each with its own cryptid.</li>
+              <li><b>Join the mailing list to claim yours,</b> then pick it up at MagicCon Detroit 2027 or have it mailed to you.</li>
+              <li><b>Free.</b> No purchase, no catch.</li>
+            </ul>
+            <div class="fan" aria-hidden="true">
+              <img src="images/site/alphacryptids/mothman.webp" width="600" height="838" alt="" loading="lazy">
+              <img src="images/site/alphacryptids/bigfoot.webp" width="600" height="838" alt="" loading="lazy">
+              <img src="images/site/alphacryptids/kraken.webp" width="600" height="838" alt="" loading="lazy">
+            </div>
+            <p class="fine">AlphaCryptids are proxy basic lands for casual play. They're not for resale and aren't legal in sanctioned tournaments.</p>
+          </div>
+
+          <div class="signup" id="signup">
+            <form id="pack-form" novalidate>
+              <h3>Claim your free pack</h3>
+              <p>Join the Urza's Abacus mailing list and we'll save a pack of all 26 lands for you.</p>
+
+              <div class="field">
+                <label for="f-name">Name</label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required>
+                <span class="err" id="e-name"></span>
+              </div>
+              <div class="field">
+                <label for="f-email">Email</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" required>
+                <span class="err" id="e-email"></span>
+              </div>
+              <fieldset class="field">
+                <legend>How do you want your pack?</legend>
+                <div class="choices">
+                  <label class="choice"><input type="radio" name="delivery" value="Pick it up at MagicCon Detroit 2027" checked><span><b>Pick it up</b>at MagicCon Detroit 2027</span></label>
+                  <label class="choice"><input type="radio" name="delivery" value="Mail it to me"><span><b>Mail it to me</b>we'll send it to you</span></label>
+                </div>
+              </fieldset>
+              <div class="field address" id="address-field" hidden>
+                <label for="f-address">Mailing address</label>
+                <textarea id="f-address" name="address" autocomplete="street-address" placeholder="Street, city, state or province, postal code, country"></textarea>
+                <span class="err" id="e-address"></span>
+              </div>
+              <label class="consent"><input type="checkbox" id="f-consent" name="consent"><span>Yes, email me about my pack and Urza's Abacus news. I can unsubscribe anytime.</span></label>
+              <span class="err" id="e-consent"></span>
+              <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+              <button class="btn btn-primary" type="submit" id="pack-submit">Claim my free pack</button>
+              <span class="err" id="e-form" role="alert"></span>
+              <p class="privacy-note">Your details go to a Google Form we manage. We use them only to get you your pack and send Urza's Abacus news.</p>
+            </form>
+            <div class="signup-done" id="pack-done" hidden tabindex="-1">
+              <div class="ok" aria-hidden="true">✓</div>
+              <h3>You're on the list</h3>
+              <p id="pack-done-msg"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="crypt-toolbar">
+          <h3>Every card in the pack</h3>
+          <div class="chips" role="group" aria-label="Show cards by land"><button type="button" class="chip" data-filter="all" aria-pressed="true">All 26</button><button type="button" class="chip" data-filter="W" aria-pressed="false" title="Plains (white)"><span class="pip w">W</span> 3</button><button type="button" class="chip" data-filter="U" aria-pressed="false" title="Island (blue)"><span class="pip u">U</span> 7</button><button type="button" class="chip" data-filter="B" aria-pressed="false" title="Swamp (black)"><span class="pip b">B</span> 7</button><button type="button" class="chip" data-filter="R" aria-pressed="false" title="Mountain (red)"><span class="pip r">R</span> 3</button><button type="button" class="chip" data-filter="G" aria-pressed="false" title="Forest (green)"><span class="pip g">G</span> 8</button></div>
+        </div>
+        <ul class="crypt-grid" id="crypt-grid">
+            <li class="crypt" data-colors="U"><button type="button" class="crypt-btn" data-i="0" aria-label="View Altamaha-ha larger">
+              <img src="images/site/alphacryptids/altamaha-ha.webp" width="600" height="838" loading="lazy" alt="Altamaha-ha: a full-art basic land with the cryptid Altamaha-ha">
+              <span class="crypt-cap"><b>A</b><span class="crypt-name">Altamaha-ha</span><span class="pips"><span class="pip u">U</span></span></span></button></li>
+            <li class="crypt" data-colors="G"><button type="button" class="crypt-btn" data-i="1" aria-label="View Bigfoot larger">
+              <img src="images/site/alphacryptids/bigfoot.webp" width="600" height="838" loading="lazy" alt="Bigfoot: a full-art basic land with the cryptid Bigfoot">
+              <span class="crypt-cap"><b>B</b><span class="crypt-name">Bigfoot</span><span class="pips"><span class="pip g">G</span></span></span></button></li>
+            <li class="crypt" data-colors="B"><button type="button" class="crypt-btn" data-i="2" aria-label="View Chupacabra larger">
+              <img src="images/site/alphacryptids/chupacabra.webp" width="600" height="838" loading="lazy" alt="Chupacabra: a full-art basic land with the cryptid Chupacabra">
+              <span class="crypt-cap"><b>C</b><span class="crypt-name">Chupacabra</span><span class="pips"><span class="pip b">B</span></span></span></button></li>
+            <li class="crypt" data-colors="B"><button type="button" class="crypt-btn" data-i="3" aria-label="View Dingonek larger">
+              <img src="images/site/alphacryptids/dingonek.webp" width="600" height="838" loading="lazy" alt="Dingonek: a full-art basic land with the cryptid Dingonek">
+              <span class="crypt-cap"><b>D</b><span class="crypt-name">Dingonek</span><span class="pips"><span class="pip b">B</span></span></span></button></li>
+            <li class="crypt" data-colors="W"><button type="button" class="crypt-btn" data-i="4" aria-label="View Elwedritsch larger">
+              <img src="images/site/alphacryptids/elwedritsch.webp" width="600" height="838" loading="lazy" alt="Elwedritsch: a full-art basic land with the cryptid Elwedritsch">
+              <span class="crypt-cap"><b>E</b><span class="crypt-name">Elwedritsch</span><span class="pips"><span class="pip w">W</span></span></span></button></li>
+            <li class="crypt" data-colors="B"><button type="button" class="crypt-btn" data-i="5" aria-label="View Fouke larger">
+              <img src="images/site/alphacryptids/fouke.webp" width="600" height="838" loading="lazy" alt="Fouke: a full-art basic land with the cryptid Fouke">
+              <span class="crypt-cap"><b>F</b><span class="crypt-name">Fouke</span><span class="pips"><span class="pip b">B</span></span></span></button></li>
+            <li class="crypt" data-colors="W"><button type="button" class="crypt-btn" data-i="6" aria-label="View Gunni larger">
+              <img src="images/site/alphacryptids/gunni.webp" width="600" height="838" loading="lazy" alt="Gunni: a full-art basic land with the cryptid Gunni">
+              <span class="crypt-cap"><b>G</b><span class="crypt-name">Gunni</span><span class="pips"><span class="pip w">W</span></span></span></button></li>
+            <li class="crypt" data-colors="G"><button type="button" class="crypt-btn" data-i="7" aria-label="View Hodag larger">
+              <img src="images/site/alphacryptids/hodag.webp" width="600" height="838" loading="lazy" alt="Hodag: a full-art basic land with the cryptid Hodag">
+              <span class="crypt-cap"><b>H</b><span class="crypt-name">Hodag</span><span class="pips"><span class="pip g">G</span></span></span></button></li>
+            <li class="crypt" data-colors="U"><button type="button" class="crypt-btn" data-i="8" aria-label="View Igopogo larger">
+              <img src="images/site/alphacryptids/igopogo.webp" width="600" height="838" loading="lazy" alt="Igopogo: a full-art basic land with the cryptid Igopogo">
+              <span class="crypt-cap"><b>I</b><span class="crypt-name">Igopogo</span><span class="pips"><span class="pip u">U</span></span></span></button></li>
+            <li class="crypt" data-colors="W"><button type="button" class="crypt-btn" data-i="9" aria-label="View Jackalope larger">
+              <img src="images/site/alphacryptids/jackalope.webp" width="600" height="838" loading="lazy" alt="Jackalope: a full-art basic land with the cryptid Jackalope">
+              <span class="crypt-cap"><b>J</b><span class="crypt-name">Jackalope</span><span class="pips"><span class="pip w">W</span></span></span></button></li>
+            <li class="crypt" data-colors="UB"><button type="button" class="crypt-btn" data-i="10" aria-label="View Kraken larger">
+              <img src="images/site/alphacryptids/kraken.webp" width="600" height="838" loading="lazy" alt="Kraken: a full-art basic land with the cryptid Kraken">
+              <span class="crypt-cap"><b>K</b><span class="crypt-name">Kraken</span><span class="pips"><span class="pip u">U</span><span class="pip b">B</span></span></span></button></li>
+            <li class="crypt" data-colors="U"><button type="button" class="crypt-btn" data-i="11" aria-label="View Loch Ness Monster larger">
+              <img src="images/site/alphacryptids/loch-ness-monster.webp" width="600" height="838" loading="lazy" alt="Loch Ness Monster: a full-art basic land with the cryptid Loch Ness Monster">
+              <span class="crypt-cap"><b>L</b><span class="crypt-name">Loch Ness Monster</span><span class="pips"><span class="pip u">U</span></span></span></button></li>
+            <li class="crypt" data-colors="B"><button type="button" class="crypt-btn" data-i="12" aria-label="View Moth Man larger">
+              <img src="images/site/alphacryptids/mothman.webp" width="600" height="838" loading="lazy" alt="Moth Man: a full-art basic land with the cryptid Moth Man">
+              <span class="crypt-cap"><b>M</b><span class="crypt-name">Moth Man</span><span class="pips"><span class="pip b">B</span></span></span></button></li>
+            <li class="crypt" data-colors="G"><button type="button" class="crypt-btn" data-i="13" aria-label="View Nguma Monene larger">
+              <img src="images/site/alphacryptids/nguma-monene.webp" width="600" height="838" loading="lazy" alt="Nguma Monene: a full-art basic land with the cryptid Nguma Monene">
+              <span class="crypt-cap"><b>N</b><span class="crypt-name">Nguma Monene</span><span class="pips"><span class="pip g">G</span></span></span></button></li>
+            <li class="crypt" data-colors="G"><button type="button" class="crypt-btn" data-i="14" aria-label="View Otso larger">
+              <img src="images/site/alphacryptids/otso.webp" width="600" height="838" loading="lazy" alt="Otso: a full-art basic land with the cryptid Otso">
+              <span class="crypt-cap"><b>O</b><span class="crypt-name">Otso</span><span class="pips"><span class="pip g">G</span></span></span></button></li>
+            <li class="crypt" data-colors="U"><button type="button" class="crypt-btn" data-i="15" aria-label="View Pedula larger">
+              <img src="images/site/alphacryptids/pedula.webp" width="600" height="838" loading="lazy" alt="Pedula: a full-art basic land with the cryptid Pedula">
+              <span class="crypt-cap"><b>P</b><span class="crypt-name">Pedula</span><span class="pips"><span class="pip u">U</span></span></span></button></li>
+            <li class="crypt" data-colors="U"><button type="button" class="crypt-btn" data-i="16" aria-label="View Qalupalik larger">
+              <img src="images/site/alphacryptids/qalupalik.webp" width="600" height="838" loading="lazy" alt="Qalupalik: a full-art basic land with the cryptid Qalupalik">
+              <span class="crypt-cap"><b>Q</b><span class="crypt-name">Qalupalik</span><span class="pips"><span class="pip u">U</span></span></span></button></li>
+            <li class="crypt" data-colors="G"><button type="button" class="crypt-btn" data-i="17" aria-label="View Ropen larger">
+              <img src="images/site/alphacryptids/ropen.webp" width="600" height="838" loading="lazy" alt="Ropen: a full-art basic land with the cryptid Ropen">
+              <span class="crypt-cap"><b>R</b><span class="crypt-name">Ropen</span><span class="pips"><span class="pip g">G</span></span></span></button></li>
+            <li class="crypt" data-colors="B"><button type="button" class="crypt-btn" data-i="18" aria-label="View Skunk Ape larger">
+              <img src="images/site/alphacryptids/skunk-ape.webp" width="600" height="838" loading="lazy" alt="Skunk Ape: a full-art basic land with the cryptid Skunk Ape">
+              <span class="crypt-cap"><b>S</b><span class="crypt-name">Skunk Ape</span><span class="pips"><span class="pip b">B</span></span></span></button></li>
+            <li class="crypt" data-colors="R"><button type="button" class="crypt-btn" data-i="19" aria-label="View Thunderbird larger">
+              <img src="images/site/alphacryptids/thunderbird.webp" width="600" height="838" loading="lazy" alt="Thunderbird: a full-art basic land with the cryptid Thunderbird">
+              <span class="crypt-cap"><b>T</b><span class="crypt-name">Thunderbird</span><span class="pips"><span class="pip r">R</span></span></span></button></li>
+            <li class="crypt" data-colors="G"><button type="button" class="crypt-btn" data-i="20" aria-label="View Unicorn larger">
+              <img src="images/site/alphacryptids/unicorn.webp" width="600" height="838" loading="lazy" alt="Unicorn: a full-art basic land with the cryptid Unicorn">
+              <span class="crypt-cap"><b>U</b><span class="crypt-name">Unicorn</span><span class="pips"><span class="pip g">G</span></span></span></button></li>
+            <li class="crypt" data-colors="R"><button type="button" class="crypt-btn" data-i="21" aria-label="View Vedrfolnir larger">
+              <img src="images/site/alphacryptids/vedrfolnir.webp" width="600" height="838" loading="lazy" alt="Vedrfolnir: a full-art basic land with the cryptid Vedrfolnir">
+              <span class="crypt-cap"><b>V</b><span class="crypt-name">Vedrfolnir</span><span class="pips"><span class="pip r">R</span></span></span></button></li>
+            <li class="crypt" data-colors="UB"><button type="button" class="crypt-btn" data-i="22" aria-label="View Wendigo larger">
+              <img src="images/site/alphacryptids/wendigo.webp" width="600" height="838" loading="lazy" alt="Wendigo: a full-art basic land with the cryptid Wendigo">
+              <span class="crypt-cap"><b>W</b><span class="crypt-name">Wendigo</span><span class="pips"><span class="pip u">U</span><span class="pip b">B</span></span></span></button></li>
+            <li class="crypt" data-colors="G"><button type="button" class="crypt-btn" data-i="23" aria-label="View Xindhi larger">
+              <img src="images/site/alphacryptids/xindhi.webp" width="600" height="838" loading="lazy" alt="Xindhi: a full-art basic land with the cryptid Xindhi">
+              <span class="crypt-cap"><b>X</b><span class="crypt-name">Xindhi</span><span class="pips"><span class="pip g">G</span></span></span></button></li>
+            <li class="crypt" data-colors="R"><button type="button" class="crypt-btn" data-i="24" aria-label="View Yeti larger">
+              <img src="images/site/alphacryptids/yeti.webp" width="600" height="838" loading="lazy" alt="Yeti: a full-art basic land with the cryptid Yeti">
+              <span class="crypt-cap"><b>Y</b><span class="crypt-name">Yeti</span><span class="pips"><span class="pip r">R</span></span></span></button></li>
+            <li class="crypt" data-colors="G"><button type="button" class="crypt-btn" data-i="25" aria-label="View Zamzummin larger">
+              <img src="images/site/alphacryptids/zamzummin.webp" width="600" height="838" loading="lazy" alt="Zamzummin: a full-art basic land with the cryptid Zamzummin">
+              <span class="crypt-cap"><b>Z</b><span class="crypt-name">Zamzummin</span><span class="pips"><span class="pip g">G</span></span></span></button></li>
+        </ul>
+      </div>
+
+      <dialog class="viewer" id="viewer" aria-label="Card viewer">
+        <div class="viewer-inner">
+          <figure><img id="viewer-img" src="" alt=""><figcaption id="viewer-cap"></figcaption></figure>
+          <button type="button" class="v-close" aria-label="Close">×</button>
+          <button type="button" class="v-prev" aria-label="Previous card">‹</button>
+          <button type="button" class="v-next" aria-label="Next card">›</button>
+        </div>
+      </dialog>
+    </section>
+
     <!-- ===== Get started ===== -->
     <section class="block" id="start" aria-labelledby="start-title">
       <div class="wrap">
@@ -710,7 +958,11 @@
           </details>
           <details>
             <summary>Where is my data kept?</summary>
-            <p>Only in your tablet's browser. There are no accounts, ads, analytics or cookies. Use Export JSON to back up your match history or move it to another tablet.</p>
+            <p>The app keeps everything in your tablet's browser. There are no accounts, ads, analytics or cookies. Use Export JSON to back up your match history or move it to another tablet. The only thing this website collects is what you type into the AlphaCryptids sign-up form, which goes to a Google Form we manage and is used only for your pack and Urza's Abacus news.</p>
+          </details>
+          <details>
+            <summary>How do I get the free AlphaCryptids lands?</summary>
+            <p>Fill in the <a href="#signup">sign-up form</a> with your name and email, and choose whether to pick your pack up at MagicCon Detroit 2027 or have it mailed to you. We'll email you with the details.</p>
           </details>
           <details>
             <summary>Does it cost anything?</summary>
@@ -867,6 +1119,116 @@
         life = START.life; dmg = START.dmg.slice(); dead = false; draw();
       });
       draw();
+
+
+      /* ---- AlphaCryptids: filter, card viewer, sign-up form ---- */
+      (function () {
+        const CARDS = [["altamaha-ha", "Altamaha-ha", "U"], ["bigfoot", "Bigfoot", "G"], ["chupacabra", "Chupacabra", "B"], ["dingonek", "Dingonek", "B"], ["elwedritsch", "Elwedritsch", "W"], ["fouke", "Fouke", "B"], ["gunni", "Gunni", "W"], ["hodag", "Hodag", "G"], ["igopogo", "Igopogo", "U"], ["jackalope", "Jackalope", "W"], ["kraken", "Kraken", "UB"], ["loch-ness-monster", "Loch Ness Monster", "U"], ["mothman", "Moth Man", "B"], ["nguma-monene", "Nguma Monene", "G"], ["otso", "Otso", "G"], ["pedula", "Pedula", "U"], ["qalupalik", "Qalupalik", "U"], ["ropen", "Ropen", "G"], ["skunk-ape", "Skunk Ape", "B"], ["thunderbird", "Thunderbird", "R"], ["unicorn", "Unicorn", "G"], ["vedrfolnir", "Vedrfolnir", "R"], ["wendigo", "Wendigo", "UB"], ["xindhi", "Xindhi", "G"], ["yeti", "Yeti", "R"], ["zamzummin", "Zamzummin", "G"]];
+        const items = Array.from(document.querySelectorAll('.crypt'));
+        const chips = Array.from(document.querySelectorAll('.chip'));
+        let visible = items.map((_, i) => i);
+
+        chips.forEach(chip => chip.addEventListener('click', () => {
+          const f = chip.dataset.filter;
+          chips.forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+          visible = [];
+          items.forEach((li, i) => {
+            const show = f === 'all' || li.dataset.colors.includes(f);
+            li.hidden = !show;
+            if (show) visible.push(i);
+          });
+        }));
+
+        // Card viewer
+        const viewer = document.getElementById('viewer');
+        const vImg = document.getElementById('viewer-img');
+        const vCap = document.getElementById('viewer-cap');
+        let at = 0, opener = null;
+        const pip = c => '<span class="pip ' + c.toLowerCase() + '">' + c + '</span>';
+        function show(i) {
+          at = i;
+          const [slug, name, col] = CARDS[i];
+          vImg.src = 'images/site/alphacryptids/' + slug + '.webp';
+          vImg.alt = name + ': a full-art basic land with the cryptid ' + name;
+          vCap.innerHTML = '<span>' + name + '</span><span class="pips">' + col.split('').map(pip).join('') + '</span>';
+        }
+        function step(d) {
+          const pos = visible.indexOf(at);
+          show(visible[(pos + d + visible.length) % visible.length]);
+        }
+        document.getElementById('crypt-grid').addEventListener('click', e => {
+          const b = e.target.closest('.crypt-btn');
+          if (!b || typeof viewer.showModal !== 'function') return;
+          opener = b; show(Number(b.dataset.i)); viewer.showModal();
+        });
+        viewer.querySelector('.v-close').addEventListener('click', () => viewer.close());
+        viewer.querySelector('.v-prev').addEventListener('click', () => step(-1));
+        viewer.querySelector('.v-next').addEventListener('click', () => step(1));
+        viewer.addEventListener('click', e => { if (e.target.classList.contains('viewer-inner')) viewer.close(); });
+        viewer.addEventListener('keydown', e => {
+          if (e.key === 'ArrowRight') step(1);
+          if (e.key === 'ArrowLeft') step(-1);
+        });
+        viewer.addEventListener('close', () => { if (opener) opener.focus(); });
+
+        // Sign-up form: sends to the AlphaCryptids Google Form
+        const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSefRxTzHDcCb1XlHhseVYE2p7k1jNw0kbZyy1MBixPe--Al-w/formResponse';
+        const FIELDS = { name: 'entry.107521373', email: 'entry.326330706', delivery: 'entry.1053740972', address: 'entry.1205430778', consent: 'entry.1828713374' };
+        const CONSENT = "Yes, email me about my pack and Urza's Abacus news. I can unsubscribe anytime.";
+        const form = document.getElementById('pack-form');
+        const addressField = document.getElementById('address-field');
+        const submit = document.getElementById('pack-submit');
+        const err = (id, msg) => { document.getElementById('e-' + id).textContent = msg || ''; };
+
+        form.addEventListener('change', e => {
+          if (e.target.name === 'delivery') addressField.hidden = e.target.value !== 'Mail it to me';
+        });
+
+        form.addEventListener('submit', async e => {
+          e.preventDefault();
+          const d = new FormData(form);
+          const name = (d.get('name') || '').trim();
+          const email = (d.get('email') || '').trim();
+          const delivery = d.get('delivery');
+          const address = (d.get('address') || '').trim();
+          const mail = delivery === 'Mail it to me';
+          let first = null;
+          const check = (id, bad, msg, el) => { err(id, bad ? msg : ''); if (bad && !first) first = el; };
+          check('name', !name, 'Enter your name.', form.elements.name);
+          check('email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'Enter an email address like name@example.com.', form.elements.email);
+          check('address', mail && address.length < 10, 'Enter the address to mail your pack to.', form.elements.address);
+          check('consent', !form.elements.consent.checked, 'Tick the box to join the mailing list. It\'s how we get your pack to you.', form.elements.consent);
+          err('form', '');
+          if (first) { first.focus(); return; }
+
+          const done = () => {
+            form.hidden = true;
+            document.getElementById('pack-done-msg').textContent = mail
+              ? 'Thanks, ' + name + '. We\'ll email ' + email + ' when your AlphaCryptids pack is on its way.'
+              : 'Thanks, ' + name + '. We\'ll email ' + email + ' with how to pick up your AlphaCryptids pack at MagicCon Detroit 2027.';
+            const box = document.getElementById('pack-done');
+            box.hidden = false; box.focus();
+          };
+          if (d.get('website')) return done();   // filled by a bot: pretend it worked
+
+          const body = new URLSearchParams();
+          body.append(FIELDS.name, name);
+          body.append(FIELDS.email, email);
+          body.append(FIELDS.delivery, delivery);
+          if (mail) body.append(FIELDS.address, address);
+          body.append(FIELDS.consent, CONSENT);
+
+          submit.disabled = true; submit.textContent = 'Sending…';
+          try {
+            // Google Forms doesn't allow reading its reply from another site, so a sent request counts as success
+            await fetch(FORM_URL, { method: 'POST', mode: 'no-cors', body });
+            done();
+          } catch (_) {
+            err('form', 'That didn\'t go through. Check your connection and try again.');
+            submit.disabled = false; submit.textContent = 'Claim my free pack';
+          }
+        });
+      })();
 
       /* ---- Highlight the section in view ---- */
       const links = Array.from(document.querySelectorAll('.section-nav a.link'));

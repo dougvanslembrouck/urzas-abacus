@@ -19,3 +19,12 @@ edh_match_history_*.json
 
 # Files Claude saved for you (PDFs and other exports)
 Claude outputs/
+
+# Social media posts (kept locally, not part of the site)
+social/
+
+# Redirect page for the old repo (not part of this site)
+redirect.html
+
+# AlphaCryptids print files (the website uses the smaller copies in images/site/alphacryptids)
+/alphacryptids/
