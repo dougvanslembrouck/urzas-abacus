@@ -430,4 +430,6 @@ Urza's Abacus was called the *NJA EDH Pod Life Tracker* up to v2.1.0. Saved hist
 
 Card data, art images, and mana symbols are provided by **[Scryfall](https://scryfall.com)**. Card art is credited to its artists in the app and is copyright Wizards of the Coast.
 
+The **AlphaCryptids V1** land art was made with Midjourney. The prompt, seed, job and original image for every card are listed in **[AI_DISCLOSURE.md](AI_DISCLOSURE.md)** ([CSV](alphacryptids-v1-sources.csv)) and on the [website's disclosure page](https://dougvanslembrouck.github.io/urzas-abacus/disclosure.html).
+
 This is unofficial Fan Content permitted under the [Wizards of the Coast Fan Content Policy](https://company.wizards.com/en/legal/fancontentpolicy). It is not approved or endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC. *Magic: The Gathering* is a trademark of Wizards of the Coast LLC.

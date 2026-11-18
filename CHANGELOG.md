@@ -9,6 +9,7 @@ All notable changes to Urza's Abacus (called the NJA EDH Pod Life Tracker up to 
 - **Island.** The fifth basic land joins the backgrounds, with art from the AlphaCryptids Loch Ness Monster card.
 - **Land choice per seat.** The top of each seat's **Choose commander** panel shows all five basic lands with their mana symbols. Picking one clears that seat's commander and switches its background. Each seat's land is remembered on the tablet.
 - **Lore.** A book button next to the crown flips the card over to list the AlphaCryptids of that seat's land, each with a short description and the region its legend comes from. Tap **Back** to flip it back. Lore follows the land each card is printed on, so the Kraken and the Wendigo appear under both Island and Swamp.
+- **AlphaCryptids AI art disclosure.** The AlphaCryptids V1 art was made with Midjourney. A new website page (`disclosure.html`), `AI_DISCLOSURE.md` and `alphacryptids-v1-sources.csv` list the prompt, seed, job and original image for all 26 cards. The giveaway section, the site footer and the README link to it.
 
 ### Changed
 - **Default lands.** Seats now start as **Mountain, Plains, Forest and Swamp** (they were Arcane, Inferno, Forest and Shadow). With no commander, a seat goes by its land's name.
