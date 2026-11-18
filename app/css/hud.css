@@ -44,6 +44,7 @@
 .hud-btn.btn-action { color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
 .hud-btn.btn-reset { color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
 .hud-btn.btn-log { color: var(--accent-blue); border: 1px solid rgba(59, 130, 246, 0.3); }
+.hud-btn.btn-lands { color: #c4b5fd; border: 1px solid rgba(167, 139, 250, 0.35); }
 
 .hud-divider {
   width: 1px;

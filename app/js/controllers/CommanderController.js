@@ -26,6 +26,7 @@
         card.picker.bind({
           onQuery: text => this.queueSearch(playerId, text),
           onPick: (name, colors) => this.pick(playerId, name, colors),
+          onPickLand: landId => this.pickLand(playerId, landId),
           onClose: () => this.close(playerId)
         });
       });
@@ -93,6 +94,12 @@
       this.loadDetails(playerId, name);
     }
 
+    /** Use one of the five basic lands as this seat's background (clears its commander). */
+    pickLand(playerId, landId) {
+      this.close(playerId);
+      this.model.setSeatLand(playerId, landId);
+    }
+
     /** Look up art and artist for a commander chosen by name, if it's still that seat's pick. */
     loadDetails(playerId, name) {
       this.catalog.findStandardPrinting(name)
@@ -105,7 +112,9 @@
 
     _state(playerId, state) {
       const current = this.model.getPlayer(playerId).commander;
-      return { results: [], more: false, selectedName: current ? current.name : null, ...state };
+      const lands = this.model.config.LAND_ORDER.map(id => this.model.config.LANDS[id]);
+      return { results: [], more: false, selectedName: current ? current.name : null,
+        lands, currentLand: this.model.landOf(playerId), ...state };
     }
 
     _cancel(playerId) {

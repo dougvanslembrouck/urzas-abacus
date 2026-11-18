@@ -64,7 +64,18 @@
   cursor: pointer;
 }
 .picker-item:active, .picker-item.selected { border-color: var(--accent-blue); }
-.picker-item.land-option { color: var(--text-muted); font-style: italic; }
+
+/* Land backgrounds: five chips above the search results */
+.picker-lands { display: grid; gap: 6px; padding-bottom: 6px; border-bottom: 1px solid #222838; margin-bottom: 4px; }
+.picker-lands-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+.picker-lands-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.land-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #141822; border: 1px solid #2a3142; border-radius: 999px;
+  color: #fff; font-size: 0.8rem; font-weight: 600; padding: 4px 11px 4px 5px; cursor: pointer;
+}
+.land-chip .mana-pips { --pip-size: 20px; }
+.land-chip.selected { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.15); }
 .picker-hint { color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 0.75rem 0; }
 
 /* Color identity pips: shared .mana-pips styles live in player-card.css */

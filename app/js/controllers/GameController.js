@@ -8,9 +8,10 @@
   'use strict';
 
   class GameController {
-    constructor({ gameModel, catalog, boardView, hudView }) {
+    constructor({ gameModel, catalog, loreCatalog, boardView, hudView }) {
       this.model = gameModel;
       this.catalog = catalog;
+      this.lore = loreCatalog;
       this.board = boardView;
       this.hud = hudView;
       this.artUrlFor = commander => this.catalog.artUrl(commander);
@@ -22,7 +23,8 @@
           onToggleDead: () => this.model.toggleEliminated(playerId),
           onToggleMonarch: () => this.model.toggleMonarch(playerId),
           onTax: step => this.model.changeCommanderTax(playerId, step),
-          onNameInput: text => this.model.setName(playerId, text)
+          onNameInput: text => this.model.setName(playerId, text),
+          onLore: () => this.toggleLore(playerId)
         });
       });
 
@@ -33,7 +35,8 @@
           this.hud.closeChooser();
           this.model.setFourPlayerLayout(layoutId);
         },
-        onReset: () => this.resetGame()
+        onReset: () => this.resetGame(),
+        onClearCommanders: () => this.clearCommanders()
       });
 
       this.model.on('change', () => this.render());
@@ -48,6 +51,24 @@
       if (this.hud.isChooserOpen) return this.hud.closeChooser();
       if (this.model.playerCount === 4 || !this.model.hasChosenFourPlayerLayout) return this.hud.openChooser();
       return this.model.setPlayerCount(4);
+    }
+
+    /** Flip a seat's card to the AlphaCryptids of its land, or back. */
+    toggleLore(playerId) {
+      const card = this.board.card(playerId);
+      if (card.isLoreOpen) return card.closeLore();
+      const landId = this.model.landOf(playerId);
+      return card.openLore(this.model.config.LANDS[landId], this.lore.forLand(landId));
+    }
+
+    clearCommanders() {
+      if (!this.model.hasAnyCommander) {
+        EDH.dom.notify('Every seat is already showing its land background.');
+        return;
+      }
+      if (EDH.dom.confirm('Clear every commander? Each seat goes back to its land background. Life totals are not changed.')) {
+        this.model.clearAllCommanders();
+      }
     }
 
     resetGame() {

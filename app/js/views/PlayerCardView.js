@@ -24,13 +24,16 @@
       this.el = cloneTemplate('player-card-template');
       this.el.dataset.seat = seat.id;
       this.el.id = `p${seat.id}-container`;
-      this.el.classList.add(`theme-${seat.theme}`);
 
       this.nameInput = role(this.el, 'name');
-      this.nameInput.value = seat.defaultName;
       this.lifeValue = role(this.el, 'life');
       this.deadButton = this.el.querySelector('[data-action="dead"]');
       this.monarchButton = this.el.querySelector('[data-action="monarch"]');
+      this.loreButton = this.el.querySelector('.lore-btn');
+      this.lorePanel = role(this.el, 'lore');
+      this.loreTitle = role(this.el, 'lore-title');
+      this.loreList = role(this.el, 'lore-list');
+      this._loreLand = null;
       this.commanderLabel = role(this.el, 'commander-label');
       this.artCredit = role(this.el, 'art-credit');
       this.taxControl = role(this.el, 'tax');
@@ -45,7 +48,6 @@
         const row = cloneTemplate('cmd-row-template');
         row.dataset.from = other.id;
         row.id = `p${seat.id}-from-p${other.id}`;
-        row.style.setProperty('--seat-accent', other.accent);
         rowsContainer.appendChild(row);
         this.cmdRows[other.id] = {
           row,
@@ -61,7 +63,7 @@
 
     /**
      * handlers: { onLife(step), onCommanderDamage(fromId, step), onToggleDead(),
-     *             onToggleMonarch(), onTax(step), onNameInput(text), onOpenPicker() }
+     *             onToggleMonarch(), onTax(step), onNameInput(text), onOpenPicker(), onLore() }
      */
     bind(handlers) {
       Object.assign(this.handlers, handlers);
@@ -79,6 +81,7 @@
           case 'monarch':     return this._call('onToggleMonarch');
           case 'tax':         return this._call('onTax', step);
           case 'open-picker': return this._call('onOpenPicker');
+          case 'lore':        return this._call('onLore');
           default:            return undefined;   // picker buttons are handled by CommanderPickerView
         }
       });
@@ -94,6 +97,9 @@
       this.el.classList.toggle('is-hidden-seat', !model.isActive(id));
       this.el.classList.toggle('is-eliminated', player.isDead);
       this.el.classList.toggle('is-monarch', isMonarch);
+      this.el.dataset.land = player.land;
+      // A lore page belongs to one land: close it if the seat switches land
+      if (this.isLoreOpen && this._loreLand !== player.land) this.closeLore();
 
       // Don't overwrite the name while the player is typing it
       if (document.activeElement !== this.nameInput && this.nameInput.value !== player.name) {
@@ -117,6 +123,7 @@
         const fromId = Number(key);
         const { row, label, value } = this.cmdRows[fromId];
         label.textContent = model.displayName(fromId);
+        row.style.setProperty('--seat-accent', model.accentOf(fromId));
         value.textContent = player.commanderDamage[fromId];
         row.classList.toggle('lethal-warning', model.isLethalCommanderDamage(id, fromId));
         row.classList.toggle('is-hidden-seat', !model.isActive(fromId));
@@ -167,6 +174,37 @@
       this._shownColors = colors;
       this.colorsBox.innerHTML = colors === null ? '' : EDH.mana.pipsHtml(colors);
       this.colorsBox.classList.toggle('has-colors', colors !== null);
+    }
+
+    /* ---------- Lore: the card flips to the cryptids of its land ---------- */
+
+    get isLoreOpen() { return this.el.classList.contains('lore-open'); }
+
+    /**
+     * @param {object} land      config.LANDS entry: { id, name, color }
+     * @param {Array} cryptids   from LoreCatalog.forLand: { name, region, description }
+     */
+    openLore(land, cryptids) {
+      const { escapeHtml } = EDH.dom;
+      this._loreLand = land.id;
+      this.loreTitle.innerHTML = `Cryptids of the ${escapeHtml(land.name)} ${EDH.mana.pipsHtml(land.color, 'lore-pip')}`;
+      this.loreList.innerHTML = cryptids.map(c => `
+        <li class="lore-item">
+          <div class="lore-name"><b class="lore-letter">${escapeHtml(c.name[0])}</b>${escapeHtml(c.name)}</div>
+          <p class="lore-desc">${escapeHtml(c.description)}</p>
+          <div class="lore-region">${escapeHtml(c.region)}</div>
+        </li>`).join('');
+      this.loreList.scrollTop = 0;
+      this.el.classList.add('lore-open');
+      this.lorePanel.setAttribute('aria-hidden', 'false');
+      this.loreButton.setAttribute('aria-pressed', 'true');
+    }
+
+    closeLore() {
+      this.el.classList.remove('lore-open');
+      this.lorePanel.setAttribute('aria-hidden', 'true');
+      this.loreButton.setAttribute('aria-pressed', 'false');
+      this._loreLand = null;
     }
 
     _showArt(url) {

@@ -6,7 +6,7 @@ It handles life, commander damage, commander tax, the monarch, and eliminations 
 
 No app store, no account, no build step. Open `app/index.html` and play.
 
-![Version 2.1.1](https://img.shields.io/badge/version-2.1.1-blue)
+![Version 2.2.0](https://img.shields.io/badge/version-2.2.0-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 ![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![Players: 2–4](https://img.shields.io/badge/players-2%E2%80%934-purple)
@@ -108,6 +108,17 @@ In **Sides** and **Around**, the center bar turns to lie along the middle seam, 
 - Picking one sets the seat's background to the card's art, credits the artist, shows the commander's **color identity as mana pips** under the tax counter, and **renames the seat to the commander**, both on the card and in every opponent's damage rows.
 - Full details are under [Commander art](#commander-art).
 
+### Land backgrounds
+- With no commander picked, each seat shows a basic land and goes by its name. Seats start as **Mountain, Plains, Forest and Swamp**.
+- Any seat can switch to any of the five basic lands, **Island** included, from the top of its **Choose commander** panel. Picking a land clears that seat's commander.
+- Each seat's land also colors its row in everyone's commander damage panel, and the tablet remembers each seat's land.
+- **Clear Commanders** on the center bar sets every seat back to its land background in one tap (after a confirmation). Life and damage are left alone.
+
+### Lore
+- Tap the **book** beside the crown and the card flips over to show the **AlphaCryptids** of that seat's land: each cryptid's name, a one-line description, and where its legend comes from.
+- Lore follows the land each AlphaCryptids card is printed on. The Kraken and the Wendigo are printed with two land symbols, so they appear under both Island and Swamp.
+- Tap **Back** to flip the card back. A lore page closes on its own if the seat switches land.
+
 ### Commander tax
 - A **Tax** counter beside the commander button counts in steps of 2 (0 → 2 → 4 → 6…). The number is exactly the extra mana the next cast costs.
 - It turns amber once a player has tax, and it can't go below 0.
@@ -189,12 +200,14 @@ Keep the `app` folder together. `app/index.html` needs the `css`, `js`, and `ima
 |---|---|---|
 | Center bar | **2P / 3P / 4P** | Changes the number of seats. **4P** opens the layout chooser the first time, and again whenever you tap it during a four-player game |
 | Center bar | **Reset** | Starts a new game (after confirming) |
+| Center bar | **Clear Commanders** | Sets every seat back to its land background (after confirming) |
 | Center bar | **Log Game** | Saves the current game to match history |
 | Center bar | **History** | Opens match history |
 | Card header | **Name** | Tap to type a player name |
+| Card header | **Book** | Flips the card to the Lore of this seat's land |
 | Card header | **Crown** | Makes this player the monarch, or removes it |
 | Card header | **I'm Dead / Undo** | Eliminates or revives this player |
-| Below the name | **Choose commander ▾** | Opens the commander search |
+| Below the name | **Choose commander ▾** | Opens the commander search, with the five land backgrounds at the top |
 | Below the name | **Tax − / +** | Changes commander tax by 2 |
 | Under Tax | **Mana pips** | Shows the commander's color identity (display only) |
 | Life area | **Left half / right half** | Loses / gains 1 life |
@@ -217,22 +230,23 @@ Keep the `app` folder together. `app/index.html` needs the `css`, `js`, and `ima
 
 Commanders that only exist in special versions use Scryfall's default printing. The artist of the printing shown is always credited on the card.
 
-**Names.** Picking a commander renames the seat to the commander's name. Long names end in "…" when space is tight. **Use land background** switches back to the seat's land art and restores its default name, unless the player has typed their own name since.
+**Names.** Picking a commander renames the seat to the commander's name. Long names end in "…" when space is tight. Choosing a **land background** at the top of the picker switches the seat back to land art and to the land's name, unless the player has typed their own name since.
 
 **Remembered.** Each seat's commander (name, color identity, artist, and art link) is saved on the device and restored the next time you open the app, even without internet. Picks saved by v2.0 are looked up again automatically.
 
 **Internet.** Searching and picking need internet, because they ask Scryfall directly. Nothing is downloaded or stored in advance. Without a connection, the picker says it can't reach Scryfall, saved commanders keep their names, and a seat whose art can't load keeps its land background.
 
-### Seat themes
+### Land backgrounds
 
-When no commander is picked, each seat shows a basic land under a tinted overlay.
+When no commander is picked, each seat shows a basic land under a tinted overlay and takes the land's name.
 
-| Seat | Default name | Land | Tint | Damage-row color |
-|---|---|---|---|---|
-| 1 | Arcane | Plains | Mystic purple | Purple |
-| 2 | Inferno | Mountain | Volcanic red | Red |
-| 3 | Forest | Forest | Deep pine green | Green |
-| 4 | Shadow | Swamp | Obsidian grey | Slate |
+| Land | Starts on seat | Damage-row color | Background |
+|---|---|---|---|
+| Mountain | 1 | Red | Mountain range |
+| Plains | 2 | Gold | Open country |
+| Forest | 3 | Green | Deep forest |
+| Swamp | 4 | Violet | Misty swamp |
+| Island | any seat, from the picker | Blue | A loch, with Nessie, from the AlphaCryptids Loch Ness Monster card |
 
 ---
 
@@ -279,6 +293,7 @@ Exported files are a JSON array of match records:
 | `players[].isMonarch` | Whether the player held the crown at the end |
 | `players[].commanderTax` | Final commander tax |
 | `players[].commander` | Commander name, or `null` for the land background |
+| `players[].land` | The seat's land: `"plains"`, `"island"`, `"swamp"`, `"mountain"` or `"forest"` (v2.2.0+) |
 | `winners` | Seat numbers of the winner(s); more than one on a tie, empty if nobody survived |
 
 Files exported from v1.x import fine. Those games simply have no commander, monarch, or tax fields.
@@ -294,12 +309,13 @@ Most settings live in **`app/js/config.js`**:
 | `STARTING_LIFE` | `40` | Life at the start and after Reset |
 | `LETHAL_COMMANDER_DAMAGE` | `21` | When a damage row turns red |
 | `COMMANDER_TAX_STEP` | `2` | How much each tax tap adds |
-| `SEATS` | Arcane, Inferno, Forest, Shadow | Default names, theme, and damage-row color per seat |
+| `LANDS` | Plains, Island, Swamp, Mountain, Forest | Each land's name, color, and damage-row color |
+| `SEATS` | Mountain, Plains, Forest, Swamp | The land each seat starts on |
 | `COMMANDER_PICKER_MAX_RESULTS` | `40` | How many search results show at once |
 | `COMMANDER_SEARCH_DELAY_MS` | `300` | How long to wait after typing before searching Scryfall |
 | `SCRYFALL_STANDARD_PRINTING` | nonfoil, not promo… | Which printings count as "standard" for commander art |
 
-**Land backgrounds** are in `app/images/lands/`. Replace a file with your own image of the same name, or change the paths in `app/css/player-card.css` under *Seat themes*.
+**Land backgrounds** are in `app/images/lands/`. Replace a file with your own image of the same name, or change the paths in `app/css/player-card.css` under *Land backgrounds*.
 
 ---
 
@@ -330,7 +346,8 @@ The app follows a **Model–View–Controller** pattern with each kind of file i
 │   │   ├── models/                 Data and rules (never touch the page)
 │   │   │   ├── GameModel.js          life, damage, eliminations, monarch, tax, names, commanders, layout
 │   │   │   ├── HistoryModel.js       logged games, import / export / clear
-│   │   │   └── CommanderCatalog.js   live Scryfall search, standard printing, artist
+│   │   │   ├── CommanderCatalog.js   live Scryfall search, standard printing, artist
+│   │   │   └── LoreCatalog.js        the 26 AlphaCryptids and their lands, for Lore
 │   │   ├── views/                  Draw the screen, report taps (no game rules)
 │   │   │   ├── BoardView.js          the table
 │   │   │   ├── PlayerCardView.js     one player card
@@ -342,7 +359,7 @@ The app follows a **Model–View–Controller** pattern with each kind of file i
 │   │   │   ├── CommanderController.js
 │   │   │   └── HistoryController.js
 │   │   └── app.js                  Starts the app
-│   └── images/lands/               Seat backgrounds
+│   └── images/lands/               Land backgrounds (Plains, Island, Swamp, Mountain, Forest)
 ├── releases/                     Release notes
 ├── docs/ARCHITECTURE.md          How the app's code fits together
 └── .github/ISSUE_TEMPLATE/       Bug report and feature request forms
@@ -412,7 +429,5 @@ Code is released under the **[MIT License](LICENSE)** © 2026 Doug Vanslembrouck
 Urza's Abacus was called the *NJA EDH Pod Life Tracker* up to v2.1.0. Saved history and commander picks from those versions carry over.
 
 Card data, art images, and mana symbols are provided by **[Scryfall](https://scryfall.com)**. Card art is credited to its artists in the app and is copyright Wizards of the Coast.
-
-The **AlphaCryptids V1** land art was made with Midjourney. The prompt, seed, job and original image for every card are listed in **[AI_DISCLOSURE.md](AI_DISCLOSURE.md)** ([CSV](alphacryptids-v1-sources.csv)) and on the [website's disclosure page](https://dougvanslembrouck.github.io/urzas-abacus/disclosure.html).
 
 This is unofficial Fan Content permitted under the [Wizards of the Coast Fan Content Policy](https://company.wizards.com/en/legal/fancontentpolicy). It is not approved or endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC. *Magic: The Gathering* is a trademark of Wizards of the Coast LLC.

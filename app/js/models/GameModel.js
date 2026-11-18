@@ -2,7 +2,7 @@
    GameModel (Model)
    Everything about the game in progress: player count,
    names, life, commander damage, eliminations, monarch,
-   commander tax and each seat's commander.
+   commander tax, and each seat's land and commander.
    It enforces the rules and emits "change" after every
    update. It never touches the page.
    ========================================================= */
@@ -22,12 +22,15 @@
       this.monarchId = null;
       this.players = {};
 
+      const savedLands = storage.readJSON(config.STORAGE_KEYS.seatLands, {}) || {};
       config.SEATS.forEach(seat => {
+        const land = config.LANDS[savedLands[seat.id]] ? savedLands[seat.id] : seat.defaultLand;
         const commanderDamage = {};
         config.SEATS.forEach(other => { if (other.id !== seat.id) commanderDamage[other.id] = 0; });
         this.players[seat.id] = {
           id: seat.id,
-          name: seat.defaultName,
+          name: config.LANDS[land].name,
+          land,                       // the seat's basic land: background, default name, damage-row color
           life: config.STARTING_LIFE,
           isDead: false,
           commanderTax: 0,
@@ -58,10 +61,18 @@
       return this.players[playerId];
     }
 
-    /** The name to show: what the player typed, or the seat's default if blank. */
+    /** The name to show: what the player typed, or the seat's land if blank. */
     displayName(playerId) {
-      const seat = this.seats.find(s => s.id === playerId);
-      return this.players[playerId].name.trim() || seat.defaultName;
+      return this.players[playerId].name.trim() || this.landName(playerId);
+    }
+
+    landOf(playerId) { return this.players[playerId].land; }
+    landName(playerId) { return this.config.LANDS[this.players[playerId].land].name; }
+    accentOf(playerId) { return this.config.LANDS[this.players[playerId].land].accent; }
+
+    /** Whether any seat has a commander picked. */
+    get hasAnyCommander() {
+      return Object.values(this.players).some(p => p.commander);
     }
 
     isLethalCommanderDamage(defenderId, attackerId) {
@@ -155,8 +166,40 @@
       if (commander) {
         player.name = commander.name;
       } else if (previous && player.name === previous.name) {
-        player.name = this.seats.find(s => s.id === playerId).defaultName;
+        player.name = this.landName(playerId);
       }
+    }
+
+    /**
+     * Switch a seat to a basic land background. This also clears the seat's commander.
+     * A seat that was going by its land's name or its commander's name takes the new
+     * land's name; a name the player typed is kept.
+     */
+    setSeatLand(playerId, landId) {
+      const player = this.players[playerId];
+      if (!player || !this.config.LANDS[landId]) return;
+      const usingDefault = !player.name.trim()
+        || player.name === this.landName(playerId)
+        || (player.commander && player.name === player.commander.name);
+      player.commander = null;
+      player.land = landId;
+      if (usingDefault) player.name = this.landName(playerId);
+      this._saveCommanderChoices();
+      this._saveLands();
+      this._changed();
+    }
+
+    /** Clear every seat's commander, so each shows its land background again. */
+    clearAllCommanders() {
+      Object.values(this.players).forEach(p => this._applyCommander(p.id, null));
+      this._saveCommanderChoices();
+      this._changed();
+    }
+
+    _saveLands() {
+      const lands = {};
+      Object.values(this.players).forEach(p => { lands[p.id] = p.land; });
+      this.storage.writeJSON(this.config.STORAGE_KEYS.seatLands, lands);
     }
 
     /** New game: life, damage, eliminations, tax and monarch reset. Names, commanders and layout stay. */
@@ -188,7 +231,8 @@
           isDead: p.isDead,
           isMonarch: this.monarchId === id,
           commanderTax: p.commanderTax,
-          commander: p.commander ? p.commander.name : null
+          commander: p.commander ? p.commander.name : null,
+          land: p.land
         };
       });
 

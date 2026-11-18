@@ -19,27 +19,14 @@
   container-type: inline-size;
 }
 
-/* ---- Seat themes: land art under a tinted scrim. The color is the fallback. ---- */
-.theme-arcane {  /* Plains */
-  --tint: 23, 18, 40;
-  background-color: #171228;
-  background-image: linear-gradient(rgba(23, 18, 40, 0.55), rgba(10, 8, 20, 0.82)), url("../images/lands/plains.png");
-}
-.theme-inferno { /* Mountain */
-  --tint: 36, 15, 15;
-  background-color: #240f0f;
-  background-image: linear-gradient(rgba(36, 15, 15, 0.45), rgba(15, 6, 6, 0.8)), url("../images/lands/mountain.png");
-}
-.theme-forest {  /* Forest */
-  --tint: 12, 32, 20;
-  background-color: #0c2014;
-  background-image: linear-gradient(rgba(12, 32, 20, 0.45), rgba(5, 14, 8, 0.8)), url("../images/lands/forest.png");
-}
-.theme-shadow {  /* Swamp */
-  --tint: 19, 21, 24;
-  background-color: #131518;
-  background-image: linear-gradient(rgba(19, 21, 24, 0.4), rgba(8, 9, 11, 0.8)), url("../images/lands/swamp.png");
-}
+/* ---- Land backgrounds: each seat shows its basic land (data-land) under a tinted scrim.
+   The color is the fallback while the image loads. ---- */
+.player-card { background-image: linear-gradient(rgba(var(--tint), 0.5), rgba(8, 8, 12, 0.82)), var(--land); }
+.player-card[data-land="plains"]   { --tint: 44, 36, 16; background-color: #2c2410; --land: url("../images/lands/plains.png"); }
+.player-card[data-land="island"]   { --tint: 10, 26, 42; background-color: #0a1a2a; --land: url("../images/lands/island.jpg"); }
+.player-card[data-land="swamp"]    { --tint: 24, 18, 30; background-color: #18121e; --land: url("../images/lands/swamp.png"); }
+.player-card[data-land="mountain"] { --tint: 36, 15, 15; background-color: #240f0f; --land: url("../images/lands/mountain.png"); }
+.player-card[data-land="forest"]   { --tint: 12, 32, 20; background-color: #0c2014; --land: url("../images/lands/forest.png"); }
 
 /* Commander art replaces the land, keeping the seat's tint */
 .player-card.has-art {
@@ -89,6 +76,24 @@
   cursor: pointer;
   z-index: 10;
 }
+
+/* ---- Lore button (book), styled like the crown beside it ---- */
+.lore-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  z-index: 10;
+  -webkit-tap-highlight-color: transparent;
+}
+.lore-btn svg { width: 18px; height: 18px; }
+.lore-btn[aria-pressed="true"] { color: #fff; background: rgba(167, 139, 250, 0.35); border-color: rgba(196, 181, 253, 0.7); }
 
 /* ---- Monarch crown ---- */
 .monarch-btn {
@@ -350,6 +355,43 @@
 .cmd-damage-val { font-family: monospace; font-size: 1rem; font-weight: 700; min-width: 1.25rem; text-align: center; }
 .cmd-row.lethal-warning { background-color: rgba(244, 63, 94, 0.25); border-color: var(--lethal-red); }
 .cmd-row.lethal-warning .cmd-damage-val { color: var(--lethal-red); animation: heartBeat 1.5s infinite; }
+
+/* ---- Lore: the card flips over to show the cryptids of its land ---- */
+.lore-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 40;                    /* above the card, below the commander picker */
+  display: none;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  padding-top: calc(var(--hud-height, 46px) / 2 + 0.75rem);
+  background: linear-gradient(rgba(var(--tint), 0.92), rgba(8, 8, 12, 0.97));
+  backface-visibility: hidden;
+  transform-origin: center;
+}
+.player-card.lore-open .lore-panel { display: flex; animation: loreFlip 0.45s cubic-bezier(.3, .7, .3, 1) both; }
+.player-card.lore-open > :not(.lore-panel):not(.commander-picker) { animation: loreAway 0.2s ease-in both; }
+@keyframes loreFlip {
+  0%   { transform: perspective(1400px) rotateY(-90deg); opacity: 0.2; }
+  100% { transform: perspective(1400px) rotateY(0deg); opacity: 1; }
+}
+@keyframes loreAway { to { opacity: 0; } }
+.lore-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
+.lore-set { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.lore-title { margin: 2px 0 0; font-size: 1.15rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; }
+.lore-title .mana-pips { --pip-size: 22px; }
+.lore-close {
+  flex-shrink: 0;
+  background: #fff; color: #000; border: none; border-radius: 8px;
+  font-weight: 700; font-size: 0.72rem; text-transform: uppercase; padding: 0.45rem 0.8rem; cursor: pointer;
+}
+.lore-list { list-style: none; margin: 0; padding: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; display: grid; gap: 0.45rem; align-content: start; flex: 1; }
+.lore-item { background: rgba(0, 0, 0, 0.42); border-left: 3px solid rgba(255, 255, 255, 0.18); border-radius: 8px; padding: 0.55rem 0.75rem; }
+.lore-name { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.92rem; color: #fff; }
+.lore-letter { width: 20px; height: 20px; border-radius: 5px; display: grid; place-items: center; background: rgba(255, 255, 255, 0.9); color: #111; font-size: 0.7rem; flex: none; }
+.lore-desc { margin: 4px 0 0; font-size: 0.8rem; line-height: 1.35; color: rgba(255, 255, 255, 0.82); }
+.lore-region { margin-top: 3px; font-size: 0.7rem; color: var(--text-muted); }
 
 /* ---- Eliminated ---- */
 .player-card.is-eliminated { background-color: var(--dead-grey) !important; opacity: 0.35; filter: grayscale(1); }

@@ -8,7 +8,7 @@
 
   EDH.config = Object.freeze({
     APP_NAME: "Urza's Abacus",
-    VERSION: '2.1.1',
+    VERSION: '2.2.0',
 
     STARTING_LIFE: 40,
     LETHAL_COMMANDER_DAMAGE: 21,
@@ -27,18 +27,31 @@
     ]),
     DEFAULT_FOUR_PLAYER_LAYOUT: 'ends',
 
-    // One entry per seat. Theme names match the classes in css/player-card.css.
+    // The five basic lands. A seat shows its land as the background, and goes by the
+    // land's name, until a commander is picked. Each land's id matches a
+    // [data-land] rule in css/player-card.css; accent colors the damage rows.
+    LANDS: Object.freeze({
+      plains:   Object.freeze({ id: 'plains',   name: 'Plains',   color: 'W', accent: '#e2b93b' }),
+      island:   Object.freeze({ id: 'island',   name: 'Island',   color: 'U', accent: '#3b82f6' }),
+      swamp:    Object.freeze({ id: 'swamp',    name: 'Swamp',    color: 'B', accent: '#9b87b5' }),
+      mountain: Object.freeze({ id: 'mountain', name: 'Mountain', color: 'R', accent: '#ef4444' }),
+      forest:   Object.freeze({ id: 'forest',   name: 'Forest',   color: 'G', accent: '#10b981' })
+    }),
+    LAND_ORDER: Object.freeze(['plains', 'island', 'swamp', 'mountain', 'forest']),   // W U B R G
+
+    // One entry per seat, with the land it starts on. Any seat can switch to any land.
     SEATS: Object.freeze([
-      { id: 1, defaultName: 'Arcane',  theme: 'arcane',  accent: '#a78bfa' },  // Plains
-      { id: 2, defaultName: 'Inferno', theme: 'inferno', accent: '#ef4444' },  // Mountain
-      { id: 3, defaultName: 'Forest',  theme: 'forest',  accent: '#10b981' },  // Forest
-      { id: 4, defaultName: 'Shadow',  theme: 'shadow',  accent: '#64748b' }   // Swamp
+      Object.freeze({ id: 1, defaultLand: 'mountain' }),
+      Object.freeze({ id: 2, defaultLand: 'plains' }),
+      Object.freeze({ id: 3, defaultLand: 'forest' }),
+      Object.freeze({ id: 4, defaultLand: 'swamp' })
     ]),
 
     STORAGE_KEYS: Object.freeze({
       history: 'edh_match_history',          // kept from v1.x (before the Urza's Abacus name) so saved data still loads
       commanders: 'edh_player_commanders',
-      fourPlayerLayout: 'urzas_abacus_4p_layout'   // remembered 4P layout choice (v2.1.1+)
+      fourPlayerLayout: 'urzas_abacus_4p_layout',   // remembered 4P layout choice (v2.1.1+)
+      seatLands: 'urzas_abacus_seat_lands'          // each seat's land background (v2.2.0+)
     }),
 
     // Commander search runs live against Scryfall (https://scryfall.com/docs/api)

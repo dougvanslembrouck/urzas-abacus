@@ -20,18 +20,20 @@
       this.input.addEventListener('keydown', event => {
         if (event.key === 'Escape') this._call('onClose');
         if (event.key === 'Enter') {
-          const first = this.results.querySelector('.picker-item:not(.land-option)');
+          const first = this.results.querySelector('.picker-item');
           if (first) first.click();
         }
       });
       element.querySelector('[data-action="close-picker"]').addEventListener('click', () => this._call('onClose'));
       this.results.addEventListener('click', event => {
+        const land = event.target.closest('[data-land]');
+        if (land) return this._call('onPickLand', land.dataset.land);
         const item = event.target.closest('.picker-item');
         if (item) this._call('onPick', item.getAttribute('data-pick') || null, item.getAttribute('data-colors'));
       });
     }
 
-    /** handlers: { onQuery(text), onPick(name|null, colors), onClose() } */
+    /** handlers: { onQuery(text), onPick(name, colors), onPickLand(landId), onClose() } */
     bind(handlers) {
       Object.assign(this.handlers, handlers);
     }
@@ -54,9 +56,14 @@
      *   status: 'prompt' | 'loading' | 'results' | 'error'
      *   query: text typed, results: [{ name, colors }], more: whether more matches exist,
      *   selectedName: the seat's current commander
+     *   lands: [{ id, name, color }], currentLand: the seat's land id
      */
     render(state) {
-      let html = '<button class="picker-item land-option" type="button" data-pick="">Use land background</button>';
+      const lands = (state.lands || []).map(land => `
+          <button class="land-chip${!state.selectedName && land.id === state.currentLand ? ' selected' : ''}" type="button" data-land="${escapeHtml(land.id)}">
+            ${EDH.mana.pipsHtml(land.color)}<span>${escapeHtml(land.name)}</span>
+          </button>`).join('');
+      let html = `<div class="picker-lands"><div class="picker-lands-label">Land background</div><div class="picker-lands-row">${lands}</div></div>`;
 
       if (state.status === 'prompt') {
         html += '<div class="picker-hint">Type at least 2 letters to search every commander on Scryfall, including the newest sets.</div>';

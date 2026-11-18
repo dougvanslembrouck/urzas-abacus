@@ -2,10 +2,20 @@
 
 All notable changes to Urza's Abacus (called the NJA EDH Pod Life Tracker up to v2.1.0). Versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [2.2.0] – 2026-11-18
 
 ### Added
-- **AlphaCryptids AI art disclosure.** The AlphaCryptids V1 art was made with Midjourney. A new website page (`disclosure.html`), `AI_DISCLOSURE.md` and `alphacryptids-v1-sources.csv` list the prompt, seed, job and original image for all 26 cards. The giveaway section, the site footer and the README link to it.
+- **Clear Commanders.** A button on the center bar sets every seat back to its land background in one tap, after a confirmation. Life totals and damage are left alone. If no seat has a commander, it says so instead.
+- **Island.** The fifth basic land joins the backgrounds, with art from the AlphaCryptids Loch Ness Monster card.
+- **Land choice per seat.** The top of each seat's **Choose commander** panel shows all five basic lands with their mana symbols. Picking one clears that seat's commander and switches its background. Each seat's land is remembered on the tablet.
+- **Lore.** A book button next to the crown flips the card over to list the AlphaCryptids of that seat's land, each with a short description and the region its legend comes from. Tap **Back** to flip it back. Lore follows the land each card is printed on, so the Kraken and the Wendigo appear under both Island and Swamp.
+
+### Changed
+- **Default lands.** Seats now start as **Mountain, Plains, Forest and Swamp** (they were Arcane, Inferno, Forest and Shadow). With no commander, a seat goes by its land's name.
+- Commander damage rows take their color from each seat's land: red, gold, green, violet or blue.
+- "Use land background" in the commander search is replaced by the five land chips.
+- Match history now records each seat's land.
+- Website: the **Open the app** button is gone from the sticky section bar, the demo card uses the new land names, and the Commanders section mentions lands and Lore.
 
 ## [2.1.1] – 2026-11-13
 
@@ -113,6 +123,7 @@ First release.
 - Match history with winners, plus JSON export, import, and clear.
 - Basic-land backgrounds (Plains, Mountain, Forest, Swamp) for the four seats.
 
+[2.2.0]: https://github.com/dougvanslembrouck/urzas-abacus/releases/tag/v2.2.0
 [2.1.1]: https://github.com/dougvanslembrouck/urzas-abacus/releases/tag/v2.1.1
 [2.1.0]: https://github.com/dougvanslembrouck/urzas-abacus/releases/tag/v2.1.0
 [2.0.0]: https://github.com/dougvanslembrouck/urzas-abacus/releases/tag/v2.0.0

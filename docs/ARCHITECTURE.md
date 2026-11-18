@@ -61,11 +61,15 @@ Rules it enforces:
 - Eliminated players can't change life, commander damage, tax, or take the crown.
 - Commander damage can't go below 0, and every point of it also changes life.
 - Only one monarch. An eliminated monarch, or one whose seat leaves the table, loses the crown.
-- Picking a commander renames the seat. Choosing the land background again restores the default name, unless the player typed their own.
+- Picking a commander renames the seat. Choosing a land background (`setSeatLand`) clears the commander and takes the land's name, unless the player typed their own. `clearAllCommanders()` does the same for every seat at once and keeps each seat's land.
+- Each seat has a `land` (`plains`, `island`, `swamp`, `mountain`, `forest`). It sets the background, the default name and the damage-row color (`accentOf`), and is saved on the device.
 - `resetGame()` resets life, damage, eliminations, tax, and the monarch, and keeps names, commanders, and layout.
 - `buildMatchRecord()` decides the winner: the last player standing, or else the surviving player(s) with the highest life.
 
 It saves each seat's commander to `localStorage` and restores them with `restoreCommanderChoices()`.
+
+### `LoreCatalog`
+The 26 AlphaCryptids, with a short description, the region each legend comes from, and the land each card is printed on (`W U B R G`). `forLand(landId)` lists the cryptids of one land, A to Z; a card printed with two symbols belongs to both. The Lore button shows that list on the back of the card (`PlayerCardView.openLore`).
 
 ### `HistoryModel`
 The list of logged games, newest first, saved under the `edh_match_history` key. It handles `add`, `importFromJSON`, `exportToJSON`, and `clear`, and emits `change` after each.
@@ -89,7 +93,7 @@ Views build their elements from the `<template>` blocks in `index.html` and use 
 | View | Element | Handlers it calls |
 |---|---|---|
 | `BoardView` | `#board` | creates one `PlayerCardView` per seat |
-| `PlayerCardView` | one `.player-card` | `onLife`, `onCommanderDamage`, `onToggleDead`, `onToggleMonarch`, `onTax`, `onNameInput`, `onOpenPicker` |
+| `PlayerCardView` | one `.player-card` | `onLife`, `onCommanderDamage`, `onToggleDead`, `onToggleMonarch`, `onTax`, `onNameInput`, `onOpenPicker`, `onLore` |
 | `CommanderPickerView` | the picker inside a card | `onQuery`, `onPick(name, colors)`, `onClose` |
 | `HudView` | `#hud` and `#layout-chooser` | `onPlayerCount`, `onFourPlayers`, `onFourPlayerLayout`, `onReset`, `onLogGame`, `onOpenHistory` |
 | `HistoryView` | `#history-panel` | `onExport`, `onImportFile`, `onClear`, `onClose` |
@@ -139,6 +143,7 @@ config → utils → models → views → controllers → app
 |---|---|
 | `edh_match_history` | Array of match records (format in the README) |
 | `urzas_abacus_4p_layout` | The chosen 4P layout: `"ends"`, `"sides"` or `"around"` (v2.1.1+) |
+| `urzas_abacus_seat_lands` | Each seat's land: `{ "1": "mountain", "2": "plains", "3": "forest", "4": "island" }` (v2.2.0+) |
 | `edh_player_commanders` | `{ "1": { "name": "Kirk, Commanding Officer", "scryfallId": "245d0430-…", "artist": "Cliff Nielsen", "colors": "RW", "art": "https://cards.scryfall.io/art_crop/…" }, "2": null, … }` |
 
 The two `edh_` keys are the same as in v1.x, and were kept through the rename to Urza's Abacus so nobody loses data. The JavaScript namespace is still `EDH` for the same reason: it's internal and renaming it would only add risk. v2.0 saved commanders as plain names; v2.1 reads those and looks them up on Scryfall once, then saves the full object.

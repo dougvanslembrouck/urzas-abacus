@@ -81,6 +81,7 @@
         this.closeChooser();
         switch (button.dataset.action) {
           case 'reset':        return this._call('onReset');
+          case 'clear-commanders': return this._call('onClearCommanders');
           case 'log-game':     return this._call('onLogGame');
           case 'open-history': return this._call('onOpenHistory');
           default:             return undefined;
@@ -105,7 +106,7 @@
       });
     }
 
-    /** handlers: { onPlayerCount(n), onFourPlayers(), onFourPlayerLayout(id), onReset(), onLogGame(), onOpenHistory() } */
+    /** handlers: { onPlayerCount(n), onFourPlayers(), onFourPlayerLayout(id), onReset(), onClearCommanders(), onLogGame(), onOpenHistory() } */
     bind(handlers) {
       Object.assign(this.handlers, handlers);
     }

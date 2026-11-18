@@ -17,7 +17,7 @@
   <style>
     /* =========================================================
        Urza's Abacus website
-       Tokens: ink, paper, violet (Arcane seat), brass (the abacus
+       Tokens: ink, paper, violet, brass (the abacus
        frame), and the five mana tints used for beads and pips.
        ========================================================= */
     :root {
@@ -501,7 +501,7 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="wrap hero-grid">
         <div>
-          <div class="hero-kicker"><b>v2.1.1</b> Free, open source, no install</div>
+          <div class="hero-kicker"><b>v2.2.0</b> Free, open source, no install</div>
           <h1 id="hero-title">The Commander life tracker that does the counting.</h1>
           <p class="hero-lede">Put one tablet in the middle of the table. Urza's Abacus keeps every player's life, commander damage, tax and the monarch, each card turned to face its player.</p>
           <div class="hero-actions">
@@ -572,7 +572,6 @@
         <a class="link" href="#alphacryptids">Free lands</a>
         <a class="link" href="#start">Get started</a>
         <a class="link" href="#questions">Questions</a>
-        <a class="btn btn-primary" href="app/index.html">Open the app</a>
       </div>
     </nav>
 
@@ -631,7 +630,7 @@
         <div class="demo" aria-label="Try a player card">
           <div class="demo-card" id="demo-card">
             <div class="demo-head">
-              <span class="demo-name">Inferno</span>
+              <span class="demo-name">Mountain</span>
               <button class="demo-dead" type="button" id="demo-dead">I'm Dead</button>
             </div>
             <div class="demo-life">
@@ -640,9 +639,9 @@
               <button class="plus" type="button" data-life="1" aria-label="Gain 1 life">+</button>
             </div>
             <div class="demo-title">Commander damage received</div>
-            <div class="demo-row" style="--acc:#a78bfa" data-row="0">
-              <span>Arcane</span>
-              <span class="demo-ctrl"><button type="button" data-dmg="-1" aria-label="Remove commander damage from Arcane">−</button><output>0</output><button type="button" data-dmg="1" aria-label="Add commander damage from Arcane">+</button></span>
+            <div class="demo-row" style="--acc:#e2b93b" data-row="0">
+              <span>Plains</span>
+              <span class="demo-ctrl"><button type="button" data-dmg="-1" aria-label="Remove commander damage from Plains">−</button><output>0</output><button type="button" data-dmg="1" aria-label="Add commander damage from Plains">+</button></span>
             </div>
             <div class="demo-row" style="--acc:#10b981" data-row="1">
               <span>Forest</span>
@@ -665,13 +664,15 @@
             <li><b>Your seat is renamed to your commander,</b> on your card and in every opponent's damage rows.</li>
             <li><b>Color identity shows as mana pips</b> under the tax counter, in the order printed on cards. Boros reads R W, colorless shows C.</li>
             <li><b>Remembered on the tablet,</b> so next game your commanders are already in place, even without internet.</li>
+            <li><b>Or play on a land.</b> Each seat can show any of the five basic lands, Island included, and Clear Commanders sets the whole table back to lands in one tap.</li>
+            <li><b>Tap the book for Lore.</b> The card flips over to show the <a href="#alphacryptids">AlphaCryptids</a> of its land: who they are and where their legends come from.</li>
           </ul>
         </div>
         <div class="cmd-mock" aria-hidden="true">
           <div class="search-mock">
             <div class="field">kren<span class="caret"></span></div>
             <ul>
-              <li class="land">Use land background</li>
+              <li class="land">Land <span class="pips"><span class="pip w">W</span><span class="pip u">U</span><span class="pip b">B</span><span class="pip r">R</span><span class="pip g">G</span></span></li>
               <li class="sel">Krenko, Mob Boss <span class="pips"><span class="pip r">R</span></span></li>
               <li>Krenko, Tin Street Kingpin <span class="pips"><span class="pip r">R</span></span></li>
             </ul>
@@ -754,7 +755,7 @@
         <div class="cryptids-intro">
           <div>
             <div class="section-head">
-              <h2 id="crypt-title">Free lands,<br>from A to Z</h2>
+              <h2 id="crypt-title">Free lands, from A to Z</h2>
               <p>AlphaCryptids is a set of 26 full-art basic lands, one cryptid for every letter, from the Altamaha-ha to the Zamzummin. We're giving away complete packs at MagicCon Detroit 2027.</p>
             </div>
             <ul class="cryptid-facts">
@@ -768,8 +769,6 @@
               <img src="images/site/alphacryptids/kraken.webp" width="600" height="838" alt="" loading="lazy">
             </div>
             <p class="fine">AlphaCryptids are proxy basic lands for casual play. They're not for resale and aren't legal in sanctioned tournaments.</p>
-            <p class="fine">The AlphaCryptids V1 art was made with Midjourney.<br><a href="disclosure.html">See the prompt, seed and job for every card.</a></p>
-            <p class="fine">Every AlphaCryptids image is open and free for anyone to use. No copyright or artist's license is claimed: these images were created with AI, not drawn by an artist.</p>
           </div>
 
           <div class="signup" id="signup">
@@ -790,8 +789,8 @@
               <fieldset class="field">
                 <legend>How do you want your pack?</legend>
                 <div class="choices">
-                  <label class="choice"><input type="radio" name="delivery" value="Pick it up at MagicCon Detroit 2027" checked><span><b>Pick up</b>at MagicCon Detroit</span></label>
-                  <label class="choice"><input type="radio" name="delivery" value="Mail it to me"><span><b>Mail It To Me</b></span></label>
+                  <label class="choice"><input type="radio" name="delivery" value="Pick it up at MagicCon Detroit 2027" checked><span><b>Pick it up</b>at MagicCon Detroit 2027</span></label>
+                  <label class="choice"><input type="radio" name="delivery" value="Mail it to me"><span><b>Mail it to me</b>we'll send it to you</span></label>
                 </div>
               </fieldset>
               <div class="field address" id="address-field" hidden>
@@ -992,7 +991,6 @@
           <a href="https://github.com/dougvanslembrouck/urzas-abacus">GitHub</a>
           <a href="https://github.com/dougvanslembrouck/urzas-abacus/blob/main/CHANGELOG.md">Changelog</a>
           <a href="https://github.com/dougvanslembrouck/urzas-abacus/issues">Report a bug</a>
-          <a href="disclosure.html">AI art disclosure</a>
         </div>
       </div>
       <div class="legal">

@@ -10,6 +10,7 @@
 
   // Models
   const catalog = new EDH.CommanderCatalog(config);   // live Scryfall lookups
+  const loreCatalog = new EDH.LoreCatalog(config);    // the AlphaCryptids, by land
   const gameModel = new EDH.GameModel(config, EDH.storage);
   const historyModel = new EDH.HistoryModel(config, EDH.storage);
 
@@ -19,7 +20,7 @@
   const historyView = new EDH.HistoryView(document.getElementById('history-panel'));
 
   // Controllers
-  const gameController = new EDH.GameController({ gameModel, catalog, boardView, hudView });
+  const gameController = new EDH.GameController({ gameModel, catalog, loreCatalog, boardView, hudView });
   const commanderController = new EDH.CommanderController({ gameModel, catalog, boardView, config });
   new EDH.HistoryController({ gameModel, historyModel, hudView, historyView });
 
@@ -32,5 +33,5 @@
   });
 
   // Handy for debugging in the browser console: EDH.app.gameModel, etc.
-  EDH.app = { config, catalog, gameModel, historyModel, boardView, hudView, historyView };
+  EDH.app = { config, catalog, loreCatalog, gameModel, historyModel, boardView, hudView, historyView };
 })(window.EDH = window.EDH || {});
