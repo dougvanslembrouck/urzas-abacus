@@ -8,7 +8,7 @@
 
   EDH.config = Object.freeze({
     APP_NAME: "Urza's Abacus",
-    VERSION: '2.2.0',
+    VERSION: '2.2.1',
 
     STARTING_LIFE: 40,
     LETHAL_COMMANDER_DAMAGE: 21,

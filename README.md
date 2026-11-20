@@ -6,7 +6,7 @@ It handles life, commander damage, commander tax, the monarch, and eliminations 
 
 No app store, no account, no build step. Open `app/index.html` and play.
 
-![Version 2.2.0](https://img.shields.io/badge/version-2.2.0-blue)
+![Version 2.2.1](https://img.shields.io/badge/version-2.2.1-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 ![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![Players: 2–4](https://img.shields.io/badge/players-2%E2%80%934-purple)

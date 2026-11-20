@@ -2,6 +2,11 @@
 
 All notable changes to Urza's Abacus (called the NJA EDH Pod Life Tracker up to v2.1.0). Versions follow [Semantic Versioning](https://semver.org/).
 
+## [2.2.1] – 2026-11-20
+
+### Fixed
+- Picking a commander from the search results did nothing. The tap was read as a tap on the seat's land, which cleared the commander again.
+
 ## [2.2.0] – 2026-11-18
 
 ### Added
@@ -124,6 +129,7 @@ First release.
 - Match history with winners, plus JSON export, import, and clear.
 - Basic-land backgrounds (Plains, Mountain, Forest, Swamp) for the four seats.
 
+[2.2.1]: https://github.com/dougvanslembrouck/urzas-abacus/releases/tag/v2.2.1
 [2.2.0]: https://github.com/dougvanslembrouck/urzas-abacus/releases/tag/v2.2.0
 [2.1.1]: https://github.com/dougvanslembrouck/urzas-abacus/releases/tag/v2.1.1
 [2.1.0]: https://github.com/dougvanslembrouck/urzas-abacus/releases/tag/v2.1.0

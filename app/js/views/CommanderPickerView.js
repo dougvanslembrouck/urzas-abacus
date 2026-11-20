@@ -26,7 +26,7 @@
       });
       element.querySelector('[data-action="close-picker"]').addEventListener('click', () => this._call('onClose'));
       this.results.addEventListener('click', event => {
-        const land = event.target.closest('[data-land]');
+        const land = event.target.closest('.land-chip');
         if (land) return this._call('onPickLand', land.dataset.land);
         const item = event.target.closest('.picker-item');
         if (item) this._call('onPick', item.getAttribute('data-pick') || null, item.getAttribute('data-colors'));
